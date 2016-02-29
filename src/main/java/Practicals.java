@@ -1,5 +1,8 @@
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import qub.visionsystem.HistogramException;
+import qub.visionsystem.JVision;
+
 import java.awt.image.BufferedImage;
 
 /**
@@ -13,9 +16,9 @@ public class Practicals {
     public static void main(String[] args) {
 
         try {
-            practical1();
-            practical2();
-//            practical3();
+//            practical1();
+//            practical2();
+            practical3();
 //            practical4();
 //            practical5();
         } catch (HistogramException e) {
