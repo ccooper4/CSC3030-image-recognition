@@ -85,7 +85,7 @@ public class VisionSystem {
      * @param intercept the y intercept of the transformation
      * @return          the look up table
      */
-    public short[] createBrightnessLut(int intercept) {
+    public short[] createBrightnessLUT(int intercept) {
         int capacity = 256;
         short[] lookUpTable = new short[capacity];
 
@@ -107,7 +107,7 @@ public class VisionSystem {
      * @param intercept the intercept of the transformation
      * @return          the look up table
      */
-    public short[] createLinearStretchLut(float gradient, float intercept)
+    public short[] createLinearStretchLUT(float gradient, float intercept)
     {
         int capacity = 256;
         short[] lookUpTable = new short[capacity];
@@ -125,19 +125,53 @@ public class VisionSystem {
     }
 
     /**
+     * Create a power law look up table (Enhance contrast) given the gamma value
+     * @param gamma the gamma value of the transformation
+     * @return      the look up table
+     */
+    public short[] createPowerLawLUT(float gamma) {
+        final int capacity = 256;
+        final int donominatorConstant = 255;
+        short[] lookUpTable = new short[capacity];
+
+        for (int i = 0; i < capacity; i++) {
+            lookUpTable[i] = (short) (Math.pow(i, gamma) / Math.pow(donominatorConstant, gamma - 1));
+        }
+        return lookUpTable;
+    }
+
+    /**
+     * Create a histogram equalisation look up table (Enhance contrast) given a base histogram
+     * @param histogram             the histogram
+     * @return                      the look up table
+     * @throws HistogramException
+     */
+    public short[] createHistogramEqualisationLUT(Histogram histogram) throws HistogramException {
+        final int capacity = 256;
+        short[] lookUpTable = new short[capacity];
+
+        for (int i = 0; i < capacity; i++) {
+            lookUpTable[i] = (short)
+                    Math.max(0,
+                            (256 * histogram.getCumulativeFrequency(i) / histogram.getNumSamples()) - 1);
+        }
+        return lookUpTable;
+    }
+
+    /**
      * Enhance the brightness of a {@link BufferedImage}
      * @param image     the buffered image
      * @param intercept the intercept of the transformation
      * @return          the enhanced image
      */
     public BufferedImage enhanceBrightness(BufferedImage image, int intercept) {
-        short[] lookUpTable = createBrightnessLut(intercept);
+        short[] lookUpTable = createBrightnessLUT(intercept);
         return ImageOp.pixelop(image, lookUpTable);
 
     }
 
     /**
-     * Enhance the contract of a {@link BufferedImage}
+     * Enhance the contract of a {@link BufferedImage} via linear stretching
      * @param image     the buffered image
      * @param gradient  the gradient of the transformation
      * @param intercept the intercept of the transformation
@@ -145,7 +179,29 @@ public class VisionSystem {
      */
     public BufferedImage enhanceContrast(BufferedImage image, float gradient, float intercept)
     {
-        short[] lookUpTable = createLinearStretchLut(gradient, intercept);
+        short[] lookUpTable = createLinearStretchLUT(gradient, intercept);
+        return ImageOp.pixelop(image, lookUpTable);
+    }
+
+    /**
+     * Enhance the contrast of a {@link BufferedImage} via power law function
+     * @param image the buffered image
+     * @param gamma the gamma value of the transformation
+     * @return      the enhanced image
+     */
+    public BufferedImage enhanceContrast(BufferedImage  image, float gamma) {
+        short[] lookUpTable = createPowerLawLUT(gamma);
+        return ImageOp.pixelop(image, lookUpTable);
+    }
+
+    /**
+     * Enhance the contrast of a {@link BufferedImage} via histogram equalisation
+     * @param image the buffered image
+     * @return      the enhanced image
+     */
+    public BufferedImage enhanceContrast(BufferedImage image) throws HistogramException {
+        Histogram histogram = createHistogram(image);
+        short[] lookUpTable = createHistogramEqualisationLUT(histogram);
         return ImageOp.pixelop(image, lookUpTable);
     }
 
