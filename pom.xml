@@ -14,7 +14,23 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
+    <repositories>
+        <!-- Internal project repository -->
+        <repository>
+            <id>in-project</id>
+            <name>In Project Repository</name>
+            <url>file:${project.basedir}/libs</url>
+        </repository>
+    </repositories>
+
     <dependencies>
+        <!-- Vision System -->
+        <dependency>
+            <groupId>qub</groupId>
+            <artifactId>vision-system</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <!-- Unit testing -->
         <dependency>
             <groupId>junit</groupId>
