@@ -96,7 +96,7 @@ public class Practicals {
         // Part 3
         JVision contrastDisplay1 = new JVision();
         contrastDisplay1.setTitle("Practical 2 - Contrast enhancement (Power Law)");
-        float gamma = 0.5f;
+        float gamma = 2f;
 
         BufferedImage image2 = visionSystem.getPracticalImage("boat256.jpg");       // the original image
         BufferedImage enhancedImage2 = visionSystem.enhanceContrast(image2, gamma); // the enhanced image
