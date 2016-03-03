@@ -1,7 +1,10 @@
+package reference;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import qub.visionsystem.HistogramException;
 import qub.visionsystem.JVision;
+import shared.VisionSystem;
 
 import java.awt.image.BufferedImage;
 

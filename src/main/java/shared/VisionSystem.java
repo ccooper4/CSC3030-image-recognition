@@ -1,3 +1,5 @@
+package shared;
+
 import qub.visionsystem.*;
 import utils.ResourceUtils;
 import java.awt.image.BufferedImage;
