@@ -44,23 +44,43 @@ public class ConfigurationUtils {
      * @param propertyValue The value of the property
      */
     public static void writeProperty(String propertyName, String propertyValue) {
-        Properties properties = new Properties();
-        OutputStream output = null;
+        writeProperty(propertyName, propertyValue, null);
+    }
 
+    /**
+     * Write a new property to the properties file
+     * @param propertyName  The name of the property
+     * @param propertyValue The value of the property
+     * @param comment       The comment to add to the property file
+     */
+    public static void writeProperty(String propertyName, String propertyValue, String comment) {
+        File configFile = new File(ResourceUtils.getResourcePath(PROP_FILE));
         try {
-            output = new FileOutputStream(ResourceUtils.getResourcePath("config.properties"));
-            properties.setProperty(propertyName, propertyValue);
-            properties.store(output, null);
+            Properties props = new Properties();
+            props.setProperty(propertyName, propertyValue);
+            FileWriter writer = new FileWriter(configFile, true);   // true = append to file
+            writer.write("\n"); // new line before adding property
+            props.store(writer, comment);
+            writer.close();
         } catch (IOException e) {
             log.error("IOException", e);
-        } finally {
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (IOException e) {
-                    log.error("IOException", e);
-                }
-            }
+        }
+    }
+
+    /**
+     * Remove a property
+     * @param propertyName  The property name
+     */
+    public static void removeProperty(String propertyName) {
+        try {
+            File myFile = new File(ResourceUtils.getResourcePath(PROP_FILE));
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(myFile));
+            properties.remove(propertyName);
+            OutputStream out = new FileOutputStream(myFile);
+            properties.store(out, null);
+        } catch (IOException e) {
+            log.error("IOException", e);
         }
     }
 }
