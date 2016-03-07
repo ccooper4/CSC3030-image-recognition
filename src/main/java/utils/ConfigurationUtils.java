@@ -68,7 +68,7 @@ public class ConfigurationUtils {
     }
 
     /**
-     * Remove a property
+     * Remove a property from the properties file
      * @param propertyName  The property name
      */
     public static void removeProperty(String propertyName) {
