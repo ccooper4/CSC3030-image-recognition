@@ -54,7 +54,7 @@ public class ConfigurationUtils {
      * @param comment       The comment to add to the property file
      */
     public static void writeProperty(String propertyName, String propertyValue, String comment) {
-        File configFile = new File(ResourceUtils.getResourcePath(PROP_FILE));
+        File configFile = new File(ResourceUtils.getResourcePathAsString(PROP_FILE));
         try {
             Properties props = new Properties();
             props.setProperty(propertyName, propertyValue);
@@ -73,7 +73,7 @@ public class ConfigurationUtils {
      */
     public static void removeProperty(String propertyName) {
         try {
-            File myFile = new File(ResourceUtils.getResourcePath(PROP_FILE));
+            File myFile = new File(ResourceUtils.getResourcePathAsString(PROP_FILE));
             Properties properties = new Properties();
             properties.load(new FileInputStream(myFile));
             properties.remove(propertyName);

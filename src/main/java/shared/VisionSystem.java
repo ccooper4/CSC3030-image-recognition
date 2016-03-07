@@ -2,17 +2,14 @@ package shared;
 
 import qub.visionsystem.*;
 import utils.ResourceUtils;
+import utils.StringConstants;
+
 import java.awt.image.BufferedImage;
 
 /**
  * The main class for image processing and working with the Vision System API.
  */
 public class VisionSystem {
-
-    // constants
-    private final String PRACTICALS = "practicals/";
-    private final String TRAINING = "assignment/training/";
-    private final String TEST = "assignment/test/";
 
     /**
      * Creare a {@link Histogram] using a {@link BufferedImage}
@@ -223,21 +220,21 @@ public class VisionSystem {
      * Utility method for accessing practical images
      */
     public BufferedImage getPracticalImage(String image) {
-        return readInImage(ResourceUtils.getResourcePath(PRACTICALS + image));
+        return readInImage(ResourceUtils.getResourcePathAsString(StringConstants.PRACTICALS + image));
     }
 
     /**
      * Utility method for accessing test images
      */
     public BufferedImage getTestImage(String image) {
-        return readInImage(ResourceUtils.getResourcePath(TEST + image));
+        return readInImage(ResourceUtils.getResourcePathAsString(StringConstants.TEST + image));
     }
 
     /**
      * Utility method for accessing training images
      */
     public BufferedImage getTrainingImage(String image) {
-        return readInImage(ResourceUtils.getResourcePath(TRAINING + image));
+        return readInImage(ResourceUtils.getResourcePathAsString(StringConstants.TRAINING + image));
     }
 
 }

@@ -11,7 +11,7 @@ public class ResourceUtilsTest {
 
     @Test
     public void testGetResourcePath() {
-        String path = ResourceUtils.getResourcePath("boat256.jpg");
+        String path = ResourceUtils.getResourcePathAsString("boat256.jpg");
         assertNotNull(path);
     }
 }
