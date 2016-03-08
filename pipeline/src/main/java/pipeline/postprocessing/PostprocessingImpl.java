@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import pipeline.segmentation.SegmentationImpl;
 import qub.visionsystem.ImageOp;
 import util.ConfigurationUtils;
+import util.StringConstants;
 
 import java.awt.image.BufferedImage;
 
@@ -18,13 +19,13 @@ public class PostprocessingImpl implements IPostprocessing{
     /**
      * The size of the mask to use
      */
-    private int maskSize = 3;
+    private int maskSize;
 
     /**
      * Constructs a new instance of the PostprocessingImpl pipeline block.
      */
     public PostprocessingImpl() {
-        maskSize = Integer.parseInt(ConfigurationUtils.loadProperty("maskSize"));
+        maskSize = Integer.parseInt(ConfigurationUtils.loadProperty(StringConstants.POSTPROCESSING_MASK_SIZE));
     }
 
     /**

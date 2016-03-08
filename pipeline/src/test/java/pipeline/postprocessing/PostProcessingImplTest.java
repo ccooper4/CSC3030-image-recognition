@@ -10,6 +10,7 @@ package pipeline.postprocessing;
         import java.awt.image.BufferedImage;
         import java.awt.image.Raster;
         import java.io.File;
+        import java.io.IOException;
 
         import static org.junit.Assert.*;
 
@@ -27,16 +28,16 @@ public class PostProcessingImplTest {
     @Before
     public void loadTestingImage() {
         visionSystem = new VisionSystem();
-        testingImage = visionSystem.readInImage(ResourceUtils.getResourcePathAsString("apple1-066-153.png"));
-        //postProcessedImage = visionSystem.readInImage(ResourceUtils.getResourcePathAsString("postprocessed.png"));
+        testingImage = visionSystem.readInImage(ResourceUtils.getResourcePathAsString("segmented.png"));
 
         postprocessing = new PostprocessingImpl();
     }
 
     @Test
-    public void testPerformPostProcessing(){
-        //TODO
+    public void testPerformPostProcessing() throws IOException {
+        BufferedImage result = postprocessing.performPostProcessing(testingImage);
+
+        File outputfile = new File("target/postprocessed.png");
+        ImageIO.write(result, "png", outputfile);
     }
-
-
 }

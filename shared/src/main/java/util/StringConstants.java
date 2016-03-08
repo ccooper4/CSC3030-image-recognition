@@ -7,4 +7,5 @@ public class StringConstants {
     public static final String TEST = "assignment/test/";
 
     public static final String SEGMENTATION_CONSTANT_SETTING = "segmenatationConstant";
+    public static final String POSTPROCESSING_MASK_SIZE = "postprocessingMaskSize";
 }
