@@ -1,4 +1,4 @@
-package utils;
+package util;
 
 public class StringConstants {
     public static final String PRACTICALS = "practicals/";

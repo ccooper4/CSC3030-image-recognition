@@ -1,7 +1,7 @@
 package ui;
 
-import utils.ResourceUtils;
-import utils.StringConstants;
+import util.ResourceUtils;
+import util.StringConstants;
 
 import javax.swing.*;
 import java.awt.*;

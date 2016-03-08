@@ -2,7 +2,7 @@ package ui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.ResourceUtils;
+import util.ResourceUtils;
 
 import javax.swing.*;
 import java.awt.*;

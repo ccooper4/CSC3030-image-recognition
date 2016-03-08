@@ -1,6 +1,7 @@
 package utils;
 
 import org.junit.Test;
+import util.ResourceUtils;
 
 import static org.junit.Assert.*;
 
