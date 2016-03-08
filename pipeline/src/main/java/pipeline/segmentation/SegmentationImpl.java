@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import qub.visionsystem.ImageOp;
 import util.ConfigurationUtils;
+import util.StringConstants;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
@@ -20,7 +21,7 @@ public class SegmentationImpl implements ISegmentation {
      */
     public SegmentationImpl() {
 
-        segmentationConstant = Integer.parseInt(ConfigurationUtils.loadProperty("segmenatationConstant"));
+        segmentationConstant = Integer.parseInt(ConfigurationUtils.loadProperty(StringConstants.SEGMENTATION_CONSTANT_SETTING));
 
     }
 

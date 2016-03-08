@@ -5,4 +5,6 @@ public class StringConstants {
     public static final String ASSIGNMENT = "assignment/";
     public static final String TRAINING = "assignment/training/";
     public static final String TEST = "assignment/test/";
+
+    public static final String SEGMENTATION_CONSTANT_SETTING = "segmenatationConstant";
 }
