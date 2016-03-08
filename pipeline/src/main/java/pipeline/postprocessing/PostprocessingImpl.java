@@ -65,9 +65,15 @@ public class PostprocessingImpl implements IPostprocessing{
         return ImageOp.open(source, maskSize);
     }
 
+    /**
+     * Performs the required post processing on the buffered image.
+     * @param bufferedImage The image to perform the processing on.
+     * @return The processed image.
+     */
     @Override
     public BufferedImage performPostProcessing(BufferedImage bufferedImage) {
-        return null;
+        //return PerformOpeningThenClosing(bufferedImage); //Image with holes? run this
+        return PerformClosingThenOpening(bufferedImage); //Noisy image? run this
     }
 
 }
