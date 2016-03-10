@@ -1,25 +1,20 @@
 package pipeline.postprocessing;
 
-        import org.junit.Before;
-        import org.junit.Test;
-        import org.junit.Assert;
-        import util.ResourceUtils;
-        import visionsystem.VisionSystem;
+import org.junit.Before;
+import org.junit.Test;
+import util.ResourceUtils;
+import util.image.ImageUtils;
 
-        import javax.imageio.ImageIO;
-        import java.awt.image.BufferedImage;
-        import java.awt.image.Raster;
-        import java.io.File;
-        import java.io.IOException;
-
-        import static org.junit.Assert.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by ccoop on 08/03/2016.
  */
 public class PostProcessingImplTest {
 
-    public VisionSystem visionSystem;
     public BufferedImage testingImage;
     public BufferedImage postProcessedImage;
 
@@ -27,8 +22,7 @@ public class PostProcessingImplTest {
 
     @Before
     public void loadTestingImage() {
-        visionSystem = new VisionSystem();
-        testingImage = visionSystem.readInImage(ResourceUtils.getResourcePathAsString("segmented.png"));
+        testingImage = ImageUtils.readInImage(ResourceUtils.getResourcePathAsString("segmented.png"));
 
         postprocessing = new PostprocessingImpl();
     }

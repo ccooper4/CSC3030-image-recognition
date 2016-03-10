@@ -2,10 +2,9 @@ package pipeline.postprocessing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pipeline.segmentation.SegmentationImpl;
-import qub.visionsystem.ImageOp;
 import util.ConfigurationUtils;
 import util.StringConstants;
+import util.image.ImageUtils;
 
 import java.awt.image.BufferedImage;
 
@@ -34,7 +33,7 @@ public class PostprocessingImpl implements IPostprocessing{
      * @return The Image after opening has been performed.
      */
     public BufferedImage PerformOpening(BufferedImage source){
-        return ImageOp.open(source, maskSize);
+        return ImageUtils.open(source, maskSize);
     }
 
     /**
@@ -43,7 +42,7 @@ public class PostprocessingImpl implements IPostprocessing{
      * @return The Image after opening has been performed.
      */
     public BufferedImage PerformClosing(BufferedImage source){
-        return ImageOp.close(source, maskSize);
+        return ImageUtils.close(source, maskSize);
     }
 
     /**
@@ -52,8 +51,8 @@ public class PostprocessingImpl implements IPostprocessing{
      * @return The Image after opening has been performed.
      */
     public BufferedImage PerformOpeningThenClosing(BufferedImage source){
-         source = ImageOp.open(source, maskSize);
-        return ImageOp.close(source, maskSize);
+         source = ImageUtils.open(source, maskSize);
+        return ImageUtils.close(source, maskSize);
     }
 
     /**
@@ -62,8 +61,8 @@ public class PostprocessingImpl implements IPostprocessing{
      * @return The Image after opening has been performed.
      */
     public BufferedImage PerformClosingThenOpening(BufferedImage source){
-        source = ImageOp.close(source, maskSize);
-        return ImageOp.open(source, maskSize);
+        source = ImageUtils.close(source, maskSize);
+        return ImageUtils.open(source, maskSize);
     }
 
     /**
