@@ -1,13 +1,17 @@
 package pipeline.featureextraction;
 
+import util.ConfigurationUtils;
+import util.StringConstants;
 import util.image.ImageUtils;
 
 import java.awt.image.BufferedImage;
 
 public class FeatureExtractionImpl implements IFeatureExtraction {
 
-    public FeatureExtractionImpl() {
+    private int perimeterMask = 0;
 
+    public FeatureExtractionImpl() {
+        perimeterMask = Integer.parseInt(ConfigurationUtils.loadProperty(StringConstants.PERIMETER_MASK_SIZE));
     }
 
     /**
@@ -17,10 +21,10 @@ public class FeatureExtractionImpl implements IFeatureExtraction {
      */
     @Override
     public FeaturePayload performFeatureExtraction(BufferedImage bufferedImage) {
-        FeaturePayload featurePayload = new FeaturePayload();
-        featurePayload.setArea(ImageUtils.calculateArea(bufferedImage));
-        featurePayload.setPerimeter(ImageUtils.calculatePerimeter(bufferedImage));
-        return featurePayload;
+        int area = ImageUtils.calculateArea(bufferedImage);
+        int perimeter = ImageUtils.calculatePerimeter(bufferedImage, area, perimeterMask);
+
+        return new FeaturePayload(area, perimeter);
     }
 
 

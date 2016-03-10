@@ -11,8 +11,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 
 /**
- * Class to hold all image processing logic - to be used in conjunction with pipeline implementations to perform
- * automated image processing. Methods should be accessed statically.
+ * Class to hold all image processing logic - to be used in conjunction with pipeline implementations
+ * to perform automated image processing. Methods should be accessed statically.
  */
 public class ImageUtils {
 
@@ -117,12 +117,17 @@ public class ImageUtils {
     }
 
     /**
-     * Calculate the perimeter of an object in an image
-     * @param image the image
-     * @return      the perimeter
+     * Calculate the perimeter of an object in an image.
+     * @param image The image.
+     * @return      The perimeter.
      */
-    public static int calculatePerimeter(BufferedImage image) {
-        return 0;
+    public static int calculatePerimeter(BufferedImage image, int originalArea, int maskSize) {
+        BufferedImage erodedImage = erode(image, maskSize);
+
+        int erodedArea = calculateArea(erodedImage);
+        int perimeter = originalArea - erodedArea;
+
+        return perimeter;
     }
 
     /**
