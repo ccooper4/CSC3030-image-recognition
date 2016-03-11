@@ -52,7 +52,7 @@ public class Container {
         // Create a panel and add the tabbed pane to it
         JPanel panel = new JPanel(new GridLayout(1, 1));
         panel.add(tabbedPane, BorderLayout.CENTER);
-        panel.setPreferredSize(new Dimension(600, 450));
+        panel.setPreferredSize(new Dimension(Dimensions.MIN_WIDTH, Dimensions.MIN_HEIGHT));
 
         // Create a frame and add the panel to it
         JFrame frame = new JFrame("Tabbed Pane Demo");
