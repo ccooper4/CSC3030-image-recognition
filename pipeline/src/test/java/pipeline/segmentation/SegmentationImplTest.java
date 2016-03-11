@@ -4,21 +4,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
 import util.ResourceUtils;
-import visionsystem.VisionSystem;
+import util.image.ImageUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.File;
 
-import static org.junit.Assert.*;
-
 /**
  * Tests for the segmentation class.
  */
 public class SegmentationImplTest {
 
-    public VisionSystem visionSystem;
     public BufferedImage testingImage;
     public BufferedImage segmentedImage;
 
@@ -26,9 +23,8 @@ public class SegmentationImplTest {
 
     @Before
     public void loadTestingImage() {
-        visionSystem = new VisionSystem();
-        testingImage = visionSystem.readInImage(ResourceUtils.getResourcePathAsString("apple1-066-153.png"));
-        segmentedImage = visionSystem.readInImage(ResourceUtils.getResourcePathAsString("segmented.png"));
+        testingImage = ImageUtils.readInImage(ResourceUtils.getResourcePathAsString("apple1-066-153.png"));
+        segmentedImage = ImageUtils.readInImage(ResourceUtils.getResourcePathAsString("segmented.png"));
 
         segmentation = new SegmentationImpl();
     }
