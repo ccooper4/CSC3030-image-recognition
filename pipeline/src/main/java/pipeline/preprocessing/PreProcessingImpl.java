@@ -6,6 +6,6 @@ public class PreProcessingImpl implements IPreprocessing {
 
     @Override
     public BufferedImage performPreprocessing(BufferedImage bufferedImage) {
-        return null;
+        return bufferedImage;
     }
 }

@@ -2,6 +2,8 @@ package ui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ui.Panels.ClassificationPanel;
+import ui.Panels.TrainingPanel;
 import util.ResourceUtils;
 
 import javax.swing.*;
@@ -15,6 +17,9 @@ public class Container {
     private static final Logger log = LoggerFactory.getLogger(Container.class);
     private TrainingPanel trainingPanel;
     private ClassificationPanel classificationPanel;
+
+    private static final int MIN_WIDTH = 1000;
+    private static final int MIN_HEIGHT = 600;
 
     public Container() {
         trainingPanel = new TrainingPanel();
@@ -52,7 +57,7 @@ public class Container {
         // Create a panel and add the tabbed pane to it
         JPanel panel = new JPanel(new GridLayout(1, 1));
         panel.add(tabbedPane, BorderLayout.CENTER);
-        panel.setPreferredSize(new Dimension(Dimensions.MIN_WIDTH, Dimensions.MIN_HEIGHT));
+        panel.setPreferredSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
 
         // Create a frame and add the panel to it
         JFrame frame = new JFrame("Tabbed Pane Demo");
