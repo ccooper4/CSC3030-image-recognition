@@ -25,6 +25,7 @@ public class PipelineController implements IPipelineController {
     private IFeatureExtraction featureExtraction;
     private IClassification classification;
 
+    private BufferedImage original;
     private BufferedImage preprocessed;
     private BufferedImage segmented;
     private BufferedImage postprocessed;
@@ -40,10 +41,15 @@ public class PipelineController implements IPipelineController {
 
     @Override
     public void processAnImage(BufferedImage image) {
-        preprocessed = preprocessing.performPreprocessing(image);
-        segmented = segmentation.performSegmentation(image);
-        postprocessed = postprocessing.performPostProcessing(image);
-        featurePayload = featureExtraction.performFeatureExtraction(image);
+        original = image;
+        preprocessed = preprocessing.performPreprocessing(original);
+        segmented = segmentation.performSegmentation(preprocessed);
+        postprocessed = postprocessing.performPostProcessing(segmented);
+        featurePayload = featureExtraction.performFeatureExtraction(postprocessed);
+    }
+
+    public BufferedImage getOriginal() {
+        return original;
     }
 
     public BufferedImage getPreprocessed() {

@@ -16,12 +16,12 @@ public class TrainingPanel extends BasePanel {
         super();
 
         openButton = button("Choose training image(s)", new OpenButtonListener());
-        clearButton = button("Clear Selection", new ClearButtonListener());
+        clearButton = button("Clear", new ClearButtonListener());
         actionButton = button("Train System", new TrainButtonListener());
 
         buttonPanel.add(openButton);
-        buttonPanel.add(clearButton);
         buttonPanel.add(actionButton);
+        buttonPanel.add(clearButton);
 
         add(buttonPanel, BorderLayout.NORTH);
         add(textAreaScrollPane, BorderLayout.CENTER);
@@ -41,7 +41,7 @@ public class TrainingPanel extends BasePanel {
                     fileDirectoryMap.put(file, directory);
 //                    BufferedImage image = ImageUtils.readInImage(file.getPath());
 //                    pipelineController.processAnImage(image);
-                    appendText("Processing - \t \t File: " + file.getName() + "\t \t Type: "
+                    appendText("Processing - \t \t File: " + file.getName() + "\t \t Known Type: "
                                                 + directory.toUpperCase(), textArea);
                 });
                 appendText(LINE_BREAK, textArea);
@@ -49,6 +49,24 @@ public class TrainingPanel extends BasePanel {
                 appendText(LINE_BREAK, textArea);
             } else {
                 appendText("No training images selected", textArea);
+            }
+        }
+    }
+
+    /**
+     * Clear the previously chosen image files.
+     */
+    private class ClearButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (imageFiles != null && !imageFiles.isEmpty()) {
+                imageFiles.clear();
+                selectedImagesArea.removeAll();
+                appendText("Cleared selection", textArea);
+                addDummyThumbnails();
+                repaintParent();
+            } else {
+                appendText("Nothing to clear", textArea);
             }
         }
     }

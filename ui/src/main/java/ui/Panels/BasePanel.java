@@ -9,12 +9,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BasePanel extends JPanel {
+    protected static final int DEFAULT_IMAGE_SIZE = 180;
 
-    protected final static String NEW_LINE = "\n";
-    protected final int IMAGE_SIZE = 180;
+    protected final int IMAGE_SIZE;
     protected final String LINE_BREAK = "-------------------------------";
+    protected final String NEW_LINE = "\n";
 
     protected JFileChooser fileChooser;
 
@@ -30,11 +33,16 @@ public abstract class BasePanel extends JPanel {
 
     protected JPanel buttonPanel;
 
-    protected java.util.List<File> imageFiles;
+    protected List<File> imageFiles;
     protected PipelineController pipelineController;
 
     public BasePanel() {
+        this(DEFAULT_IMAGE_SIZE);
+    }
+
+    public BasePanel(int imageSize) {
         super(new BorderLayout());
+        IMAGE_SIZE = imageSize;
 
         buttonPanel = new JPanel();
 
@@ -49,6 +57,7 @@ public abstract class BasePanel extends JPanel {
         selectedImagesAreaScrollPane = new JScrollPane(selectedImagesArea);
         selectedImagesAreaScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         selectedImagesAreaScrollPane.setVisible(false);
+        addDummyThumbnails();
 
         pipelineController = new PipelineController();
     }
@@ -68,11 +77,11 @@ public abstract class BasePanel extends JPanel {
     }
 
     /**
-     *
-     * @param text
-     * @param textArea
+     * Append text to the text area.
+     * @param text      The text to append.
+     * @param textArea  Thje text area.
      */
-    protected static void appendText(String text, JTextArea textArea) {
+    protected void appendText(String text, JTextArea textArea) {
         textArea.append(text + NEW_LINE);
     }
 
@@ -84,24 +93,43 @@ public abstract class BasePanel extends JPanel {
     }
 
     /**
+     * Add a number of dummy thumbnails to the image area to prepopulate it's size.
+     */
+    protected void addDummyThumbnails() {
+        List<File> files = new ArrayList<>();
+        for (int i =0; i < 40; i++) {
+            files.add(new File(ResourceUtils.getResourcePathAsString("images/grey_square.png")));
+        }
+        addThumbnailsToImageArea(files, false);
+    }
+
+    protected ImageIcon getImageIcon(String path, int width, int height) {
+        ImageIcon icon = new ImageIcon(path);
+        return resizeIcon(icon, width, height);
+    }
+
+    protected ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
+        Image image = icon.getImage();
+        Image resizedImage = image.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+        return new ImageIcon(resizedImage);
+    }
+
+    /**
      * Add thumbnails to the image area for the selected image files.
      * @param files The imageFiles.
      */
-    protected void addThumbnailsToImageArea(java.util.List<File> files) {
+    protected void addThumbnailsToImageArea(java.util.List<File> files, boolean repaintParent) {
         selectedImagesArea.removeAll();
         for (File file : files) {
-            ImageIcon icon = new ImageIcon(file.getPath());
-
-            // Resize icon
-            Image img = icon.getImage();
-            Image newimg = img.getScaledInstance(IMAGE_SIZE, IMAGE_SIZE,  java.awt.Image.SCALE_SMOOTH);
-            ImageIcon newIcon = new ImageIcon(newimg);
-
-            JLabel picture = new JLabel(newIcon);
+            ImageIcon icon = getImageIcon(file.getPath(), IMAGE_SIZE, IMAGE_SIZE);
+            JLabel picture = new JLabel(icon);
             selectedImagesArea.add(picture);
             selectedImagesAreaScrollPane.setVisible(true);
         }
-        repaintParent();
+
+        if (repaintParent) {
+            repaintParent();
+        }
     }
 
     protected class OpenButtonListener implements ActionListener {
@@ -112,21 +140,11 @@ public abstract class BasePanel extends JPanel {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
                 imageFiles = FileWalker.discoverFilesOnPath(file.getPath());
-                addThumbnailsToImageArea(imageFiles);
+                addThumbnailsToImageArea(imageFiles, true);
                 appendText("Selected: " + file.getPath(), textArea);
             } else {
                 appendText("Open command cancelled by user", textArea);
             }
-        }
-    }
-
-    protected class ClearButtonListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            imageFiles.clear();
-            selectedImagesArea.removeAll();
-            appendText("Cleared selection", textArea);
-            repaintParent();
         }
     }
 }

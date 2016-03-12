@@ -109,4 +109,12 @@ public class FeaturePayload {
                 && Objects.equals(this.compactness, payload.getCompactness());
 
     }
+
+    @Override
+    public String toString() {
+        return "Feature Extraction \n " +
+                "Area: " + this.getArea() + " \n" +
+                "Perimeter: " + this.getPerimeter() + " \n" +
+                "Compactness: " + this.getCompactness();
+    }
 }
