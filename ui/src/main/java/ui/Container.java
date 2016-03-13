@@ -17,9 +17,10 @@ public class Container {
     private TrainingPanel trainingPanel;
     private ClassificationPanel classificationPanel;
 
-    public static final int MIN_WIDTH = 1150;
-    public static final int MIN_HEIGHT = 600;
+    private final int MIN_WIDTH = 1150;
+    private final int MIN_HEIGHT = 600;
 
+    private final int TAB_WIDTH = 200;
 
     /**
      * Constructor.
@@ -38,8 +39,8 @@ public class Container {
 
         // Create a tabbed pane and add the components to it
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Training", null, trainingPanel, "The training section");
-        tabbedPane.addTab("Classification", null, classificationPanel, "The classification section");
+        tabbedPane.addTab(getTabHTML("Training"), null, trainingPanel, "The training section");
+        tabbedPane.addTab(getTabHTML("Classification"), null, classificationPanel, "The classification section");
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         // Create a panel and add the tabbed pane to it
@@ -48,10 +49,14 @@ public class Container {
         panel.setPreferredSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
 
         // Create a frame and add the panel to it
-        JFrame frame = new JFrame("Tabbed Pane Demo");
+        JFrame frame = new JFrame("CSC3030 Assignment");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(panel, BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private String getTabHTML(String title) {
+        return "<html>" + "<body>" + "<table width='" + TAB_WIDTH + "'>" + title + "</table>" + "</body>" + "</html>";
     }
 }

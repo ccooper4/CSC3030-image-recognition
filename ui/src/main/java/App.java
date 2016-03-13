@@ -15,7 +15,6 @@ public class App {
         Container container = new Container();
         SwingUtilities.invokeLater(() -> {
             log.info("Starting Application");
-            UIManager.put("swing.boldMetal", Boolean.FALSE); // turn off metal's use of bold fonts
             container.createAndShowMainUI();
         });
     }
