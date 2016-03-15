@@ -29,13 +29,20 @@ public class ClassificationImpl implements IClassification {
         trainingSet.add(trainingPayload);
     }
 
+    /**
+     * Classify the input image FeaturePayload
+     * @param testPayload
+     * @return
+     */
     public String classify(FeaturePayload testPayload) {
-        if (trainingSet == null) {
+        this.inputFeature = testPayload;
+        String result = rankTestSet();
+
+        if (result == null) {
             return "UNTRAINED";
         }
-        return "TEST CLASS";
+        return result;
     }
-
 
     /**
      * The k value to use for nearest neighbour
@@ -54,30 +61,55 @@ public class ClassificationImpl implements IClassification {
 
     /**
      * Order the testset in order of closeness
-     * @return The ranked set from start to 'k'
+     * @return The result classification string
      */
-    private List<Neighbour> rankTestSet(){
+    private String rankTestSet(){
         List<Neighbour> neighbours = new ArrayList<>();
 
-        for (Map.Entry<FeaturePayload, String> entry : testSet.entrySet()) {
+        for (FeaturePayload payload  : trainingSet) {
             double difference = 0;
 
-            if(entry.getKey().getCompactness() > inputFeature.getCompactness())
-            {
-                difference = entry.getKey().getCompactness() - inputFeature.getCompactness();
+            if(payload.getCompactness() > inputFeature.getCompactness()){
+                difference = payload.getCompactness() - inputFeature.getCompactness();
             }
-
             else
-            {
-                difference =  inputFeature.getCompactness() - entry.getKey().getCompactness();
-            }
+                difference =  inputFeature.getCompactness() - payload.getCompactness();
 
             Neighbour tempNeighbour = new Neighbour();
-            tempNeighbour.setClassName(entry.getValue());
+            tempNeighbour.setClassName(payload.getClassName());
             tempNeighbour.setDifference(difference);
+            neighbours.add(tempNeighbour);
         }
-        neighbours.sort((p1, p2) -> p1.getDifference().compareTo(p2.getDifference()));
 
-        return neighbours.subList(0, k-1);
+        neighbours.sort((p1, p2) -> p1.getDifference().compareTo(p2.getDifference()));
+        return calculateFrequency(neighbours);
+    }
+
+    /**
+     * Calculate the frequency of the neighbours and return the most frequent
+     * @param neighbours
+     * @return The class name
+     */
+    public String calculateFrequency(List<Neighbour> neighbours){
+        Map<String, Integer> frequencyMap = new HashMap<>();
+
+        for(int i= 0; i < k; i++){
+            if(frequencyMap.containsKey(neighbours.get(i).getClassName())){
+                frequencyMap.put(neighbours.get(i).getClassName(), frequencyMap.get(neighbours.get(i).getClassName()) + 1);
+            }
+            else
+                frequencyMap.put(neighbours.get(i).getClassName(), 1);
+        }
+
+        Map.Entry<String, Integer> max = null;
+
+        for (Map.Entry<String, Integer> entry : frequencyMap.entrySet())
+        {
+            if (max == null || entry.getValue().compareTo(max.getValue()) > 0)
+            {
+                max = entry;
+            }
+        }
+        return max.getKey();
     }
 }
