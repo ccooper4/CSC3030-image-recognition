@@ -1,6 +1,7 @@
 package ui.Panels;
 
 import pipeline.featureextraction.FeaturePayload;
+import qub.visionsystem.HistogramException;
 import util.image.ImageUtils;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -51,7 +52,11 @@ public class ClassificationPanel extends BasePanel {
 
                     appendText("Processing - \t \t File: " + file.getName(), textArea);
 
-                    pipelineController.processAnImage(ImageUtils.readInImage(file.getPath()));
+                    try {
+                        pipelineController.processAnImage(ImageUtils.readInImage(file.getPath()));
+                    } catch (HistogramException ex) {
+                        log.error("HistogramException", ex);
+                    }
 
                     JPanel processedImageStrip = new JPanel();
                     GridLayout gridLayout = new GridLayout(1, 6);

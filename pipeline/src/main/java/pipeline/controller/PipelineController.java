@@ -11,6 +11,7 @@ import pipeline.preprocessing.IPreprocessing;
 import pipeline.preprocessing.PreProcessingImpl;
 import pipeline.segmentation.ISegmentation;
 import pipeline.segmentation.SegmentationImpl;
+import qub.visionsystem.HistogramException;
 
 import java.awt.image.BufferedImage;
 
@@ -36,11 +37,11 @@ public class PipelineController implements IPipelineController {
         segmentation = new SegmentationImpl();
         postprocessing = new PostprocessingImpl();
         featureExtraction = new FeatureExtractionImpl();
-        classification = new ClassificationImpl();
+//        classification = new ClassificationImpl();
     }
 
     @Override
-    public void processAnImage(BufferedImage image) {
+    public void processAnImage(BufferedImage image) throws HistogramException {
         original = image;
         preprocessed = preprocessing.performPreprocessing(original);
         segmented = segmentation.performSegmentation(preprocessed);
