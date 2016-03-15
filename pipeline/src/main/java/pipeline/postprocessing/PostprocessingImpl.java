@@ -28,24 +28,6 @@ public class PostprocessingImpl implements IPostprocessing{
     }
 
     /**
-     * Performs an opening.
-     * @param source The input image.
-     * @return The Image after opening has been performed.
-     */
-    public BufferedImage PerformOpening(BufferedImage source){
-        return ImageUtils.open(source, maskSize);
-    }
-
-    /**
-     * Performs a closing.
-     * @param source The input image.
-     * @return The Image after opening has been performed.
-     */
-    public BufferedImage PerformClosing(BufferedImage source){
-        return ImageUtils.close(source, maskSize);
-    }
-
-    /**
      * Performs an opening then a closing.
      * @param source The input image.
      * @return The Image after opening has been performed.
