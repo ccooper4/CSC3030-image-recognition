@@ -21,7 +21,7 @@ public class SegmentationImpl implements ISegmentation {
      */
     public SegmentationImpl() {
 
-        segmentationConstant = Integer.parseInt(ConfigurationUtils.loadProperty(StringConstants.SEGMENTATION_CONSTANT_SETTING));
+        segmentationConstant = Float.parseFloat(ConfigurationUtils.loadProperty(StringConstants.SEGMENTATION_CONSTANT_SETTING));
 
     }
 
@@ -37,7 +37,7 @@ public class SegmentationImpl implements ISegmentation {
     /**
      * The constant value of A to be used for segmentation.
      */
-    private int segmentationConstant = 1;
+    private float segmentationConstant = 1.0f;
 
     // </editor-fold>
 

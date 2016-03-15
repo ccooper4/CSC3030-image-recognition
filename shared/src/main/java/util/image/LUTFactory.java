@@ -74,7 +74,7 @@ public class LUTFactory {
         short[] lookUpTable = new short[256];
 
         for (int i = 0; i < lookUpTable.length; i++) {
-            if (i < threshold) {
+            if (i <= threshold) {
                 lookUpTable[i] = 0;
             } else {
                 lookUpTable[i] = 255;

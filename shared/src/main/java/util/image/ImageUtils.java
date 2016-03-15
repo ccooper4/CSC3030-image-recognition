@@ -192,12 +192,12 @@ public class ImageUtils {
      * @param a     The value of a.
      * @return      The threshold value.
      */
-    public static int calculateAutomaticThresholdValue(BufferedImage image, int a) {
+    public static int calculateAutomaticThresholdValue(BufferedImage image, float a) {
         int mean = calculateMean(image);
         int sd = calculateStandardDeviation(image, mean);
 
-        int threshold = mean + a * sd;
-        log.info("Calculated threshold of: " + threshold);
+        int threshold = (int)(mean + a * sd);
+        log.info("Segmenatation: Calculated threshold of: " + threshold);
         return threshold;
     }
 
