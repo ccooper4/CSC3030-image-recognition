@@ -13,16 +13,29 @@ public class ClassificationImpl implements IClassification {
      */
     private static final Logger log = LoggerFactory.getLogger(ClassificationImpl.class);
 
+    private static List<FeaturePayload> trainingSet;
+
     /**
-     * Constructs a new instance of the ClassificationImpl pipeline block.
-     * @param testSet
-     * @param testingImage
+     * Default constructor
      */
-    public ClassificationImpl(Map<FeaturePayload, String> testSet, FeaturePayload testingImage) {
+    public ClassificationImpl() {
         this.k = Integer.parseInt(ConfigurationUtils.loadProperty(StringConstants.K_VALUE));
-        this.inputFeature = testingImage;
-        this.testSet = testSet;
     }
+
+    public void train(FeaturePayload trainingPayload) {
+        if (trainingSet == null) {
+            trainingSet = new ArrayList<>();
+        }
+        trainingSet.add(trainingPayload);
+    }
+
+    public String classify(FeaturePayload testPayload) {
+        if (trainingSet == null) {
+            return "UNTRAINED";
+        }
+        return "TEST CLASS";
+    }
+
 
     /**
      * The k value to use for nearest neighbour

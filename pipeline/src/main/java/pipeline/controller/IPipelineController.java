@@ -1,14 +1,20 @@
 package pipeline.controller;
 
-import qub.visionsystem.HistogramException;
-
-import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.List;
 
 public interface IPipelineController {
 
     /**
-     * Process an image using the pipeline.
-     * @param image The image to process.
+     *
+     * @param files
      */
-    void processAnImage(BufferedImage image) throws HistogramException;
+    void performTraining(List<File> files);
+
+    /**
+     *
+     * @param file
+     * @return
+     */
+    String performClassification(File file);
 }

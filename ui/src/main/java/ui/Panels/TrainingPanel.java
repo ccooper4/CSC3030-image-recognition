@@ -1,5 +1,7 @@
 package ui.Panels;
 
+import qub.visionsystem.HistogramException;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,18 +34,14 @@ public class TrainingPanel extends BasePanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (imageFiles != null && !imageFiles.isEmpty()) {
-                Map<File, String> fileDirectoryMap = new HashMap<>();
                 appendText(LINE_BREAK, textArea);
                 appendText("Beginning training", textArea);
                 appendText(LINE_BREAK, textArea);
-                imageFiles.forEach(file -> {
-                    String directory = file.getParentFile().getName();
-                    fileDirectoryMap.put(file, directory);
-//                    BufferedImage image = ImageUtils.readInImage(file.getPath());
-//                    pipelineController.processAnImage(image);
-                    appendText("Processing - \t \t File: " + file.getName() + "\t \t Known Type: "
-                                                + directory.toUpperCase(), textArea);
-                });
+                imageFiles.forEach(file -> appendText("Processing - \t \t File: " + file.getName() + "\t \t Known Type: "
+                        + file.getParentFile().getName().toUpperCase(), textArea));
+
+                pipelineController.performTraining(imageFiles);
+
                 appendText(LINE_BREAK, textArea);
                 appendText("Training Complete", textArea);
                 appendText(LINE_BREAK, textArea);

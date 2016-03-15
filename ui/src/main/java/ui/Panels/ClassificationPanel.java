@@ -52,11 +52,7 @@ public class ClassificationPanel extends BasePanel {
 
                     appendText("Processing - \t \t File: " + file.getName(), textArea);
 
-                    try {
-                        pipelineController.processAnImage(ImageUtils.readInImage(file.getPath()));
-                    } catch (HistogramException ex) {
-                        log.error("HistogramException", ex);
-                    }
+                    String className = pipelineController.performClassification(file);
 
                     JPanel processedImageStrip = new JPanel();
                     GridLayout gridLayout = new GridLayout(1, 6);
@@ -74,7 +70,7 @@ public class ClassificationPanel extends BasePanel {
                     featureLabel.setHorizontalAlignment(JLabel.CENTER);
                     processedImageStrip.add(featureLabel);
 
-                    JLabel classificationLabel = new JLabel(toHTMLString("Example Class"));
+                    JLabel classificationLabel = new JLabel(toHTMLString(className));
                     classificationLabel.setVerticalAlignment(JLabel.TOP);
                     classificationLabel.setHorizontalAlignment(JLabel.CENTER);
                     processedImageStrip.add(classificationLabel);

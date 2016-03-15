@@ -36,9 +36,15 @@ public class PreProcessingImpl implements IPreprocessing {
     }
 
     @Override
-    public BufferedImage performPreprocessing(BufferedImage bufferedImage) throws HistogramException {
+    public BufferedImage performPreprocessing(BufferedImage bufferedImage) {
         bufferedImage = ImageUtils.enhanceBrightness(bufferedImage, intercept);
-        bufferedImage = ImageUtils.enhanceContrast(bufferedImage);
+
+        try {
+            bufferedImage = ImageUtils.enhanceContrast(bufferedImage);
+        } catch (HistogramException e) {
+            log.error("Histogram exception", e);
+        }
+
         bufferedImage = ImageUtils.performNoiseReduction(bufferedImage, neighbourhoodSize);
         return bufferedImage;
     }

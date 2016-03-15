@@ -7,5 +7,5 @@ import java.awt.image.BufferedImage;
 
 public interface IPreprocessing extends IPipelineArtifact{
 
-    BufferedImage performPreprocessing(BufferedImage bufferedImage) throws HistogramException;
+    BufferedImage performPreprocessing(BufferedImage bufferedImage);
 }

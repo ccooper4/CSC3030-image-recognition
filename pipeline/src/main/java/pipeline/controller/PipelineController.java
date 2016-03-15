@@ -12,8 +12,14 @@ import pipeline.preprocessing.PreProcessingImpl;
 import pipeline.segmentation.ISegmentation;
 import pipeline.segmentation.SegmentationImpl;
 import qub.visionsystem.HistogramException;
+import util.image.ImageUtils;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Controls the various stages of the pipeline.
@@ -37,16 +43,29 @@ public class PipelineController implements IPipelineController {
         segmentation = new SegmentationImpl();
         postprocessing = new PostprocessingImpl();
         featureExtraction = new FeatureExtractionImpl();
-//        classification = new ClassificationImpl();
+        classification = new ClassificationImpl();
     }
 
-    @Override
-    public void processAnImage(BufferedImage image) throws HistogramException {
+    private void processAnImage(BufferedImage image){
         original = image;
         preprocessed = preprocessing.performPreprocessing(original);
         segmented = segmentation.performSegmentation(preprocessed);
         postprocessed = postprocessing.performPostProcessing(segmented);
         featurePayload = featureExtraction.performFeatureExtraction(postprocessed);
+    }
+
+    public void performTraining(List<File> files) {
+        for (File file : files) {
+            processAnImage(ImageUtils.readInImage(file.getPath()));
+            featurePayload.setClassName(file.getParentFile().getName().toUpperCase());
+            classification.train(featurePayload);
+        }
+    }
+
+    public String performClassification(File file) {
+        processAnImage(ImageUtils.readInImage(file.getPath()));
+        featurePayload.setClassName(file.getParentFile().getName().toUpperCase());
+        return classification.classify(featurePayload);
     }
 
     public BufferedImage getOriginal() {

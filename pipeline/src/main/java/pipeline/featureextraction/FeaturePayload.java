@@ -14,6 +14,7 @@ public class FeaturePayload {
     private Integer area = null;
     private Integer perimeter = null;
     private Integer compactness= null;
+    private String className;
 
     public FeaturePayload() {
     }
@@ -22,6 +23,14 @@ public class FeaturePayload {
         this.area = area;
         this.perimeter = perimeter;
         calculateCompactness();
+    }
+
+    /**
+     *
+     * @param className
+     */
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     /**
@@ -46,6 +55,14 @@ public class FeaturePayload {
      */
     public void setCompactness(Integer compactness) {
         this.compactness = compactness;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getClassName() {
+        return className;
     }
 
     /**
