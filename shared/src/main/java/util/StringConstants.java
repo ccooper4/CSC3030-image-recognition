@@ -9,4 +9,7 @@ public class StringConstants {
     public static final String SEGMENTATION_CONSTANT_SETTING = "segmenatationConstant";
     public static final String POSTPROCESSING_MASK_SIZE = "postprocessingMaskSize";
     public static final String PERIMETER_MASK_SIZE = "perimeterMaskSize";
+    public static final String PREPROCESSING_INTERCEPT = "preprocessingIntercept";
+    public static final String PREPROCESSING_NEIGHBOURHOOD_SIZE = "preprocessingneighbourhoodSize";
+
 }
