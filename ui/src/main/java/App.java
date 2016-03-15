@@ -15,6 +15,11 @@ public class App {
         Container container = new Container();
         SwingUtilities.invokeLater(() -> {
             log.info("Starting Application");
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+                log.error("Error setting look and feel", e);
+            }
             container.createAndShowMainUI();
         });
     }

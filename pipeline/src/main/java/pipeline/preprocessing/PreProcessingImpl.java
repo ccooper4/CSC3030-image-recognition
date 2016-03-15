@@ -33,35 +33,13 @@ public class PreProcessingImpl implements IPreprocessing {
     public PreProcessingImpl() {
         neighbourhoodSize = Integer.parseInt(ConfigurationUtils.loadProperty(StringConstants.PREPROCESSING_NEIGHBOURHOOD_SIZE));
         intercept = Integer.parseInt(ConfigurationUtils.loadProperty(StringConstants.PREPROCESSING_INTERCEPT));
-
-    }
-
-    /**
-     * Method to perform brightness enhancement via a LUT.
-     */
-    public BufferedImage PerformBrightnessEnhancement(BufferedImage bufferedImage, int intercept){
-        return ImageUtils.enhanceBrightness(bufferedImage, intercept);
-    }
-
-    /**
-     * Method to perform contrast enhancement via histogram equalisation.
-     */
-    public BufferedImage PerformHistogramEqualisation(BufferedImage bufferedImage) throws HistogramException{
-        return ImageUtils.enhanceContrast(bufferedImage);
-    }
-
-    /**
-     * Method to perform noise reduction via the median technique
-     */
-    public BufferedImage PerformNoiseReduction(BufferedImage bufferedImage, int neighbourhoodSize){
-        return ImageUtils.performNoiseReduction(bufferedImage, neighbourhoodSize);
     }
 
     @Override
     public BufferedImage performPreprocessing(BufferedImage bufferedImage) throws HistogramException {
-        bufferedImage = PerformBrightnessEnhancement(bufferedImage, intercept);
-        bufferedImage = PerformHistogramEqualisation(bufferedImage);
-        bufferedImage = PerformNoiseReduction(bufferedImage, neighbourhoodSize);
+        bufferedImage = ImageUtils.enhanceBrightness(bufferedImage, intercept);
+        bufferedImage = ImageUtils.enhanceContrast(bufferedImage);
+        bufferedImage = ImageUtils.performNoiseReduction(bufferedImage, neighbourhoodSize);
         return bufferedImage;
     }
 }
