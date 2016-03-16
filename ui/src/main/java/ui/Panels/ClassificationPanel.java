@@ -136,6 +136,7 @@ public class ClassificationPanel extends BasePanel {
                 imageFiles.clear();
                 selectedImagesArea.removeAll();
                 processedImagesArea.removeAll();
+                textArea.setText("");
                 addDummyThumbnails();
                 repaintParent();
             } else {
