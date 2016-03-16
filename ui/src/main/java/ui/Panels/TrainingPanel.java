@@ -1,6 +1,8 @@
 package ui.Panels;
 
 import util.FileWalker;
+import util.ResourceUtils;
+import util.StringConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,6 +74,9 @@ public class TrainingPanel extends BasePanel {
     private class OpenButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            File currentDirectory = new File(ResourceUtils.getResourcePathAsString(StringConstants.TRAINING));
+            fileChooser.setCurrentDirectory(currentDirectory);
+
             int returnVal = fileChooser.showOpenDialog(TrainingPanel.this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {

@@ -2,6 +2,9 @@ package ui.Panels;
 
 import pipeline.featureextraction.FeaturePayload;
 import util.FileWalker;
+import util.ResourceUtils;
+import util.StringConstants;
+import util.image.ImageUtils;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -19,6 +22,8 @@ public class ClassificationPanel extends BasePanel {
     private static final int processedImageSize = 180;
     private JPanel processedImagesArea;
     private JScrollPane processedImagesAreaScrollPane;
+    private boolean histogramMode = false;
+    private boolean classified = false;
 
     public ClassificationPanel() {
         super(imageSize);
@@ -27,8 +32,12 @@ public class ClassificationPanel extends BasePanel {
         clearButton = button("Reset Classification", new ClearButtonListener());
         actionButton = button("Classify", new ClassifyButtonListener());
 
+        JToggleButton toggleButton = new JToggleButton("Histogram Mode");
+        toggleButton.addActionListener(new ToggleButtonListener());
+
         buttonPanel.add(openButton);
         buttonPanel.add(actionButton);
+        buttonPanel.add(toggleButton);
         buttonPanel.add(clearButton);
 
         processedImagesArea = new JPanel();
@@ -48,48 +57,24 @@ public class ClassificationPanel extends BasePanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (imageFiles != null && !imageFiles.isEmpty()) {
-
-                processedImagesArea.removeAll();
-
-                imageFiles.forEach(file -> {
-
-                    appendText("Processing - \t \t File: " + file.getName(), textArea);
-
-                    String className = pipelineController.performClassification(file);
-
-                    JPanel processedImageStrip = new JPanel();
-                    GridLayout gridLayout = new GridLayout(1, 6);
-                    processedImageStrip.setLayout(gridLayout);
-                    processedImageStrip.setBorder(new EmptyBorder(10, 0, 0, 0));
-                    processedImageStrip.setAlignmentY(JPanel.TOP_ALIGNMENT);
-
-                    processedImageStrip.add(new JLabel(getImageIcon(pipelineController.getOriginal())));
-                    processedImageStrip.add(new JLabel(getImageIcon(pipelineController.getPreprocessed())));
-                    processedImageStrip.add(new JLabel(getImageIcon(pipelineController.getSegmented())));
-                    processedImageStrip.add(new JLabel(getImageIcon(pipelineController.getPostprocessed())));
-
-                    JLabel featureLabel = new JLabel(toHTMLString(pipelineController.getFeaturePayload()));
-                    featureLabel.setVerticalAlignment(JLabel.TOP);
-                    featureLabel.setHorizontalAlignment(JLabel.CENTER);
-                    processedImageStrip.add(featureLabel);
-
-                    JLabel classificationLabel = new JLabel(toHTMLString(className));
-                    classificationLabel.setVerticalAlignment(JLabel.TOP);
-                    classificationLabel.setHorizontalAlignment(JLabel.CENTER);
-                    processedImageStrip.add(classificationLabel);
-
-                    processedImagesArea.add(processedImageStrip);
-                });
-                repaintParent();
+                appendText("Performing classification", textArea);
+                drawProcessedImagePanel();
+                classified = true;
             } else {
                 appendText("No test images selected", textArea);
             }
         }
     }
 
-    protected class OpenButtonListener implements ActionListener {
+    /**
+     * Listener for the open / file selection button.
+     */
+    private class OpenButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            File currentDirectory = new File(ResourceUtils.getResourcePathAsString(StringConstants.TEST));
+            fileChooser.setCurrentDirectory(currentDirectory);
+
             int returnVal = fileChooser.showOpenDialog(ClassificationPanel.this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -109,25 +94,8 @@ public class ClassificationPanel extends BasePanel {
         }
     }
 
-    private String toHTMLString(String classification) {
-        return "<html><p></p><p><i><u>Classification</u></i></p><p></p>" +
-                "<p>" + classification + "</p></html>";
-    }
-
-    private String toHTMLString(FeaturePayload payload) {
-        return "<html><p></p><p><i><u>Feature Extraction</u></i></p><p></p>" +
-                "<p>Area: " + payload.getArea() + "</p>" +
-                "<p>Perimeter: " + payload.getPerimeter() + "</p>" +
-                "<p>Compactness: " + payload.getCompactness() + "</p></html>";
-    }
-
-    private ImageIcon getImageIcon(BufferedImage image) {
-        ImageIcon icon = new ImageIcon(image);
-        return resizeIcon(icon, processedImageSize, processedImageSize);
-    }
-
     /**
-     * Clear the previously chosen image files.
+     * Listener for the clear button.
      */
     private class ClearButtonListener implements ActionListener {
         @Override
@@ -137,11 +105,126 @@ public class ClassificationPanel extends BasePanel {
                 selectedImagesArea.removeAll();
                 processedImagesArea.removeAll();
                 textArea.setText("");
+                classified = false;
                 addDummyThumbnails();
                 repaintParent();
             } else {
                 appendText("Nothing to clear", textArea);
             }
         }
+    }
+
+    /**
+     * Listener for the toggle button.
+     */
+    private class ToggleButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
+            histogramMode = abstractButton.getModel().isSelected();
+            if (histogramMode) {
+                appendText("Histogram mode enabled", textArea);
+            } else {
+                appendText("Histogram mode disabled", textArea);
+            }
+
+            if (classified) {
+                // Redraw the processed image panel with current histogram mode.
+                drawProcessedImagePanel();
+            }
+        }
+    }
+
+    /**
+     * Perform classification and draw the processed image panel.
+     */
+    private void drawProcessedImagePanel() {
+        processedImagesArea.removeAll();
+        // Create and add image strip per image file
+        imageFiles.forEach(file -> {
+            String classification = pipelineController.performClassification(file);
+            processedImagesArea.add(createImageStrip(classification));
+        });
+        repaintParent();
+    }
+
+    /**
+     * Create an image strip based on the current state of the
+     * pipeline controller.
+     * @param classification    The classification to add to this panel.
+     * @return                  The panel.
+     */
+    private JPanel createImageStrip(String classification) {
+
+        // Create panel
+        JPanel processedImageStrip = new JPanel();
+        GridLayout gridLayout = new GridLayout(1, 6);
+        processedImageStrip.setLayout(gridLayout);
+        processedImageStrip.setBorder(new EmptyBorder(10, 0, 0, 0));
+        processedImageStrip.setAlignmentY(JPanel.TOP_ALIGNMENT);
+
+        // Extract processed images
+        BufferedImage original = pipelineController.getOriginal();
+        BufferedImage preprocessed = pipelineController.getPreprocessed();
+        BufferedImage segmented = pipelineController.getSegmented();
+        BufferedImage postProcessed = pipelineController.getPostprocessed();
+
+        // Check for histogram mode
+        if (histogramMode) {
+            original = ImageUtils.createGraphPlot(original);
+            preprocessed = ImageUtils.createGraphPlot(preprocessed);
+        }
+
+        // Add images to the panel
+        processedImageStrip.add(new JLabel(getImageIcon(original)));
+        processedImageStrip.add(new JLabel(getImageIcon(preprocessed)));
+        processedImageStrip.add(new JLabel(getImageIcon(segmented)));
+        processedImageStrip.add(new JLabel(getImageIcon(postProcessed)));
+
+        // Add feature extraction
+        JLabel featureLabel = new JLabel(toHTMLString(pipelineController.getFeaturePayload()));
+        featureLabel.setVerticalAlignment(JLabel.TOP);
+        featureLabel.setHorizontalAlignment(JLabel.CENTER);
+        processedImageStrip.add(featureLabel);
+
+        // Add classification
+        JLabel classificationLabel = new JLabel(toHTMLString(classification));
+        classificationLabel.setVerticalAlignment(JLabel.TOP);
+        classificationLabel.setHorizontalAlignment(JLabel.CENTER);
+        processedImageStrip.add(classificationLabel);
+
+        return processedImageStrip;
+    }
+
+    /**
+     * Create a html string for a classification
+     * @param classification    The classification string.
+     * @return                  The HTML string.
+     */
+    private String toHTMLString(String classification) {
+        return "<html><p></p><p><i><u>Classification</u></i></p><p></p>" +
+                "<p>" + classification + "</p></html>";
+    }
+
+    /**
+     * Create a html string for a feature payload.
+     * @param payload   The payload.
+     * @return          The HTML string.
+     */
+    private String toHTMLString(FeaturePayload payload) {
+        return "<html><p></p><p><i><u>Feature Extraction</u></i></p><p></p>" +
+                "<p>Area: " + payload.getArea() + "</p>" +
+                "<p>Perimeter: " + payload.getPerimeter() + "</p>" +
+                "<p>Compactness: " + payload.getCompactness() + "</p></html>";
+    }
+
+    /**
+     * Convert an image to an image icon.
+     * @param image The image.
+     * @return      the image icon.
+     */
+    private ImageIcon getImageIcon(BufferedImage image) {
+        ImageIcon icon = new ImageIcon(image);
+        return resizeIcon(icon, processedImageSize, processedImageSize);
     }
 }

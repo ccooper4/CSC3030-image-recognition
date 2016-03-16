@@ -32,7 +32,7 @@ public class PostprocessingImpl implements IPostprocessing{
      * @param source The input image.
      * @return The Image after opening has been performed.
      */
-    public BufferedImage PerformOpeningThenClosing(BufferedImage source){
+    public BufferedImage performOpeningThenClosing(BufferedImage source){
          source = ImageUtils.open(source, maskSize);
         return ImageUtils.close(source, maskSize);
     }
@@ -42,7 +42,7 @@ public class PostprocessingImpl implements IPostprocessing{
      * @param source The input image.
      * @return The Image after opening has been performed.
      */
-    public BufferedImage PerformClosingThenOpening(BufferedImage source){
+    public BufferedImage performClosingThenOpening(BufferedImage source){
         source = ImageUtils.close(source, maskSize);
         return ImageUtils.open(source, maskSize);
     }
@@ -54,8 +54,8 @@ public class PostprocessingImpl implements IPostprocessing{
      */
     @Override
     public BufferedImage performPostProcessing(BufferedImage bufferedImage) {
-        //return PerformOpeningThenClosing(bufferedImage); //Image with holes? run this
-        return PerformClosingThenOpening(bufferedImage); //Noisy image? run this
+        //return performOpeningThenClosing(bufferedImage); //Image with holes? run this
+        return performClosingThenOpening(bufferedImage); //Noisy image? run this
     }
 
 }

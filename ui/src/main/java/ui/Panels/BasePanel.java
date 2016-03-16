@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import pipeline.controller.IPipelineController;
 import pipeline.controller.PipelineController;
 import util.ResourceUtils;
-import util.StringConstants;
 import javax.swing.*;
 import java.awt.*;;
 import java.awt.event.ActionListener;
@@ -66,8 +65,6 @@ public abstract class BasePanel extends JPanel {
     protected static JFileChooser fileChooser() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        File baseDirectory = new File(ResourceUtils.getResourcePathAsString(StringConstants.ASSIGNMENT));
-        fileChooser.setCurrentDirectory(baseDirectory);
         return fileChooser;
     }
 

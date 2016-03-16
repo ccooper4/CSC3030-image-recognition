@@ -2,6 +2,7 @@ package util.image;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import qub.visionsystem.GraphPlot;
 import qub.visionsystem.Histogram;
 import qub.visionsystem.HistogramException;
 import qub.visionsystem.ImageOp;
@@ -290,6 +291,32 @@ public class ImageUtils {
         BufferedImage bufferedImage;
         bufferedImage = ImageOp.readInImage(filePath);
         return bufferedImage;
+    }
+
+    /**
+     * Create a graph plot using an image.
+     * @param image The image.
+     * @return      the graph plot.
+     */
+    public static GraphPlot createGraphPlot(BufferedImage image) {
+        return new GraphPlot(createHistogram(image));
+    }
+
+    /**
+     * Create a histogram using a buffered image.
+     * @param image The image.
+     * @return      The histogram.
+     */
+    public static Histogram createHistogram(BufferedImage image) {
+        Histogram histogram = null;
+
+        try {
+            histogram = new Histogram(image);
+        } catch (HistogramException e) {
+            log.error("Error creating histogram", e);
+        }
+
+        return histogram;
     }
 
     /**
