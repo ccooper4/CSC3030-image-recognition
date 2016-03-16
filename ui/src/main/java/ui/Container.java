@@ -17,7 +17,7 @@ public class Container {
     private TrainingPanel trainingPanel;
     private ClassificationPanel classificationPanel;
 
-    private final int MIN_WIDTH = 1150;
+    private final int MIN_WIDTH = 1300;
     private final int MIN_HEIGHT = 600;
 
     private final int TAB_WIDTH = 200;
@@ -51,6 +51,7 @@ public class Container {
         // Create a frame and add the panel to it
         JFrame frame = new JFrame("CSC3030 Assignment");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         frame.add(panel, BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);

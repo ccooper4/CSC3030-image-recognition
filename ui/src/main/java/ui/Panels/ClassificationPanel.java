@@ -20,10 +20,16 @@ public class ClassificationPanel extends BasePanel {
 
     private static final int imageSize = 120;
     private static final int processedImageSize = 180;
+
     private JPanel processedImagesArea;
     private JScrollPane processedImagesAreaScrollPane;
+    private JTextArea resultField;
+
     private boolean histogramMode = false;
     private boolean classified = false;
+
+    private int correctCount = 0;
+    private int incorrectCount = 0;
 
     public ClassificationPanel() {
         super(imageSize);
@@ -35,9 +41,19 @@ public class ClassificationPanel extends BasePanel {
         JToggleButton toggleButton = new JToggleButton("Histogram Mode");
         toggleButton.addActionListener(new ToggleButtonListener());
 
+        JButton analysisButton = button("Analyse", new AnaylsisButtonListener());
+
+        resultField = new JTextArea();
+        resultField.setText("");
+        resultField.setPreferredSize(new Dimension(50, 28));
+        resultField.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
+        resultField.setEditable(false);
+
         buttonPanel.add(openButton);
         buttonPanel.add(actionButton);
         buttonPanel.add(toggleButton);
+        buttonPanel.add(analysisButton);
+        buttonPanel.add(resultField);
         buttonPanel.add(clearButton);
 
         processedImagesArea = new JPanel();
@@ -63,6 +79,44 @@ public class ClassificationPanel extends BasePanel {
             } else {
                 appendText("No test images selected", textArea);
             }
+        }
+    }
+
+    private class AnaylsisButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (classified) {
+                if (incorrectCount + correctCount < imageFiles.size()) {
+                    JOptionPane.showMessageDialog(ClassificationPanel.this, "Please specify correctness on all results");
+                } else {
+                    float recognitionRate = (float) correctCount / (float) imageFiles.size();
+                    int percentage = (int) (recognitionRate * 100);
+                    resultField.setText(percentage + "%");
+                }
+            } else {
+                appendText("Nothing to analyse", textArea);
+            }
+        }
+    }
+
+    private class CorrectButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            correctCount++;
+            JButton button = (JButton) e.getSource();
+            button.setEnabled(false);
+        }
+    }
+
+    private class IncorrectButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            incorrectCount++;
+            JButton button = (JButton) e.getSource();
+            button.setEnabled(false);
         }
     }
 
@@ -105,6 +159,10 @@ public class ClassificationPanel extends BasePanel {
                 selectedImagesArea.removeAll();
                 processedImagesArea.removeAll();
                 textArea.setText("");
+                resultField.setText("");
+                incorrectCount = 0;
+                correctCount = 0;
+                resultField.setVisible(false);
                 classified = false;
                 addDummyThumbnails();
                 repaintParent();
@@ -133,6 +191,24 @@ public class ClassificationPanel extends BasePanel {
                 drawProcessedImagePanel();
             }
         }
+    }
+
+    /**
+     * Generate an incorrect button.
+     * @return  The button.
+     */
+    private JButton incorrectButton() {
+        JButton incorrectButton = button("Incorrect", new IncorrectButtonListener());
+        return incorrectButton;
+    }
+
+    /**
+     * Generate a correct button.
+     * @return  The button.
+     */
+    private JButton correctButton() {
+        JButton correctButton = button("Correct   ", new CorrectButtonListener());
+        return correctButton;
     }
 
     /**
@@ -193,6 +269,15 @@ public class ClassificationPanel extends BasePanel {
         classificationLabel.setHorizontalAlignment(JLabel.CENTER);
         processedImageStrip.add(classificationLabel);
 
+        // Add correct / incorrect buttons
+        JPanel analysisButtonsPanel = new JPanel();
+        analysisButtonsPanel.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
+        BoxLayout boxLayout = new BoxLayout(analysisButtonsPanel, BoxLayout.Y_AXIS);
+        analysisButtonsPanel.setLayout(boxLayout);
+        analysisButtonsPanel.add(correctButton());
+        analysisButtonsPanel.add(incorrectButton());
+        processedImageStrip.add(analysisButtonsPanel);
+
         return processedImageStrip;
     }
 
@@ -203,7 +288,7 @@ public class ClassificationPanel extends BasePanel {
      */
     private String toHTMLString(String classification) {
         return "<html><p></p><p><i><u>Classification</u></i></p><p></p>" +
-                "<p>" + classification + "</p></html>";
+                "<p><b>" + classification + "</b></p></html>";
     }
 
     /**

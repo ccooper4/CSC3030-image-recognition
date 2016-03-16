@@ -31,14 +31,14 @@ public abstract class BasePanel extends JPanel {
     protected JScrollPane selectedImagesAreaScrollPane;
     protected JScrollPane textAreaScrollPane;
 
+    public BasePanel() {
+        this(DEFAULT_IMAGE_SIZE);
+    }
+
     protected JPanel buttonPanel;
 
     protected List<File> imageFiles;
     protected IPipelineController pipelineController;
-
-    public BasePanel() {
-        this(DEFAULT_IMAGE_SIZE);
-    }
 
     public BasePanel(int imageSize) {
         super(new BorderLayout());
@@ -62,13 +62,13 @@ public abstract class BasePanel extends JPanel {
         pipelineController = new PipelineController();
     }
 
-    protected static JFileChooser fileChooser() {
+    protected JFileChooser fileChooser() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         return fileChooser;
     }
 
-    protected static JButton button(String label, ActionListener listener) {
+    protected JButton button(String label, ActionListener listener) {
         JButton button = new JButton(label);
         button.addActionListener(listener);
         return button;
