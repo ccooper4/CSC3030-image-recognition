@@ -2,13 +2,12 @@ package ui.Panels;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pipeline.controller.IPipelineController;
 import pipeline.controller.PipelineController;
-import util.FileWalker;
 import util.ResourceUtils;
 import util.StringConstants;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.*;;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public abstract class BasePanel extends JPanel {
     protected JPanel buttonPanel;
 
     protected List<File> imageFiles;
-    protected PipelineController pipelineController;
+    protected IPipelineController pipelineController;
 
     public BasePanel() {
         this(DEFAULT_IMAGE_SIZE);
@@ -131,22 +130,6 @@ public abstract class BasePanel extends JPanel {
 
         if (repaintParent) {
             repaintParent();
-        }
-    }
-
-    protected class OpenButtonListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            int returnVal = fileChooser.showOpenDialog(BasePanel.this);
-
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-                imageFiles = FileWalker.discoverFilesOnPath(file.getPath());
-                addThumbnailsToImageArea(imageFiles, true);
-                appendText("Selected: " + file.getPath(), textArea);
-            } else {
-                appendText("Open command cancelled by user", textArea);
-            }
         }
     }
 }

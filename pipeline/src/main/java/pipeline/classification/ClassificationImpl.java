@@ -8,12 +8,21 @@ import util.StringConstants;
 import java.util.*;
 
 public class ClassificationImpl implements IClassification {
+
     /**
      * The logger for this class.
      */
     private static final Logger log = LoggerFactory.getLogger(ClassificationImpl.class);
 
-    private static List<FeaturePayload> trainingSet;
+    /**
+     * The stored training set
+     */
+    private static Set<FeaturePayload> trainingSet;
+
+    /**
+     * The k value to use for nearest neighbour
+     */
+    private int k;
 
     /**
      * Default constructor
@@ -22,58 +31,53 @@ public class ClassificationImpl implements IClassification {
         this.k = Integer.parseInt(ConfigurationUtils.loadProperty(StringConstants.K_VALUE));
     }
 
+    /**
+     * Train the classifier with a preset feature payload.
+     * @param trainingPayload   The training feature payload.
+     */
     public void train(FeaturePayload trainingPayload) {
         if (trainingSet == null) {
-            trainingSet = new ArrayList<>();
+            trainingSet = new HashSet<>();
         }
         trainingSet.add(trainingPayload);
     }
 
-    /**
-     * Classify the input image FeaturePayload
-     * @param testPayload
-     * @return
-     */
-    public String classify(FeaturePayload testPayload) {
-        this.inputFeature = testPayload;
-        String result = rankTestSet();
-
-        if (result == null) {
-            return "UNTRAINED";
+    public void clearTraining() {
+        if (trainingSet != null && !trainingSet.isEmpty()) {
+            trainingSet.clear();
         }
-        return result;
     }
 
     /**
-     * The k value to use for nearest neighbour
+     * Classify the input image FeaturePayload.
+     * @param testPayload   The payload to classify.
+     * @return              The class of the payload.
      */
-    private int k;
+    public String classify(FeaturePayload testPayload) {
+
+        if (trainingSet == null || trainingSet.isEmpty()) {
+            return "UNTRAINED";
+        }
+
+        return classifyPayload(testPayload);
+    }
 
     /**
-     * The input feature payload
-     */
-    private Map<FeaturePayload, String> testSet;
-
-    /**
-     * The input feature payload
-     */
-    private FeaturePayload inputFeature;
-
-    /**
-     * Order the testset in order of closeness
+     * Order the test set in order of closeness and get the resultant class name.
      * @return The result classification string
      */
-    private String rankTestSet(){
+    private String classifyPayload(FeaturePayload testPayload){
         List<Neighbour> neighbours = new ArrayList<>();
 
         for (FeaturePayload payload  : trainingSet) {
-            double difference = 0;
+            double difference;
 
-            if(payload.getCompactness() > inputFeature.getCompactness()){
-                difference = payload.getCompactness() - inputFeature.getCompactness();
+            if (payload.getCompactness() > testPayload.getCompactness()) {
+                difference = payload.getCompactness() - testPayload.getCompactness();
             }
-            else
-                difference =  inputFeature.getCompactness() - payload.getCompactness();
+            else {
+                difference =  testPayload.getCompactness() - payload.getCompactness();
+            }
 
             Neighbour tempNeighbour = new Neighbour();
             tempNeighbour.setClassName(payload.getClassName());
@@ -81,35 +85,67 @@ public class ClassificationImpl implements IClassification {
             neighbours.add(tempNeighbour);
         }
 
-        neighbours.sort((p1, p2) -> p1.getDifference().compareTo(p2.getDifference()));
         return calculateFrequency(neighbours);
     }
 
     /**
      * Calculate the frequency of the neighbours and return the most frequent
-     * @param neighbours
-     * @return The class name
+     * @param neighbours    The neighbours
+     * @return              The class name
      */
-    public String calculateFrequency(List<Neighbour> neighbours){
+    private String calculateFrequency(List<Neighbour> neighbours){
+
+        neighbours.sort((p1, p2) -> p1.getDifference().compareTo(p2.getDifference()));
+
         Map<String, Integer> frequencyMap = new HashMap<>();
 
-        for(int i= 0; i < k; i++){
-            if(frequencyMap.containsKey(neighbours.get(i).getClassName())){
+        for (int i= 0; i < k; i++) {
+            if (frequencyMap.containsKey(neighbours.get(i).getClassName())) {
                 frequencyMap.put(neighbours.get(i).getClassName(), frequencyMap.get(neighbours.get(i).getClassName()) + 1);
-            }
-            else
+            } else {
                 frequencyMap.put(neighbours.get(i).getClassName(), 1);
+            }
         }
 
         Map.Entry<String, Integer> max = null;
 
-        for (Map.Entry<String, Integer> entry : frequencyMap.entrySet())
-        {
-            if (max == null || entry.getValue().compareTo(max.getValue()) > 0)
-            {
+        for (Map.Entry<String, Integer> entry : frequencyMap.entrySet()) {
+            if (max == null || entry.getValue().compareTo(max.getValue()) > 0) {
                 max = entry;
             }
         }
         return max.getKey();
+    }
+
+    /**
+     * Inner class used to wrap the differences between compactness in the training set
+     * and the feature payload under classification.
+     */
+    private class Neighbour {
+        /**
+         * The difference of compactness
+         */
+        private Double difference;
+
+        /**
+         * The Class name
+         */
+        private String className;
+
+        private Double getDifference() {
+            return difference;
+        }
+
+        private void setDifference(Double difference) {
+            this.difference = difference;
+        }
+
+        private String getClassName() {
+            return className;
+        }
+
+        private void setClassName(String className) {
+            this.className = className;
+        }
     }
 }

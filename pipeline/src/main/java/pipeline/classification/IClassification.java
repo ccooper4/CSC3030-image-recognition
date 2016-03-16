@@ -8,4 +8,6 @@ public interface IClassification extends IPipelineArtifact {
     void train(FeaturePayload trainingPayload);
 
     String classify(FeaturePayload testPayload);
+
+    void clearTraining();
 }

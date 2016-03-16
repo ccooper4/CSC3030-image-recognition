@@ -1,13 +1,12 @@
 package ui.Panels;
 
-import qub.visionsystem.HistogramException;
+import util.FileWalker;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The panel used for training ui
@@ -18,7 +17,7 @@ public class TrainingPanel extends BasePanel {
         super();
 
         openButton = button("Choose training image(s)", new OpenButtonListener());
-        clearButton = button("Clear", new ClearButtonListener());
+        clearButton = button("Reset Training", new ClearButtonListener());
         actionButton = button("Train System", new TrainButtonListener());
 
         buttonPanel.add(openButton);
@@ -60,11 +59,28 @@ public class TrainingPanel extends BasePanel {
             if (imageFiles != null && !imageFiles.isEmpty()) {
                 imageFiles.clear();
                 selectedImagesArea.removeAll();
-                appendText("Cleared selection", textArea);
+                textArea.setText("");
+                pipelineController.clearTraining();
                 addDummyThumbnails();
                 repaintParent();
             } else {
                 appendText("Nothing to clear", textArea);
+            }
+        }
+    }
+
+    private class OpenButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int returnVal = fileChooser.showOpenDialog(TrainingPanel.this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                imageFiles = FileWalker.discoverFilesOnPath(file.getPath());
+                addThumbnailsToImageArea(imageFiles, true);
+                appendText("Selected: " + file.getPath(), textArea);
+            } else {
+                appendText("Open command cancelled by user", textArea);
             }
         }
     }

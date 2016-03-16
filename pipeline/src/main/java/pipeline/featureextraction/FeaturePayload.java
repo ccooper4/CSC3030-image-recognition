@@ -13,7 +13,7 @@ public class FeaturePayload {
     private static final Logger log = LoggerFactory.getLogger(FeaturePayload.class);
     private Integer area = null;
     private Integer perimeter = null;
-    private Integer compactness= null;
+    private Integer compactness = null;
     private String className;
 
     public FeaturePayload() {
@@ -123,8 +123,8 @@ public class FeaturePayload {
 
         return Objects.equals(this.area, payload.getArea())
                 && Objects.equals(this.perimeter, payload.getPerimeter())
-                && Objects.equals(this.compactness, payload.getCompactness());
-
+                && Objects.equals(this.compactness, payload.getCompactness())
+                && Objects.equals(this.className, payload.getClassName());
     }
 
     @Override
@@ -132,6 +132,7 @@ public class FeaturePayload {
         return "Feature Extraction \n " +
                 "Area: " + this.getArea() + " \n" +
                 "Perimeter: " + this.getPerimeter() + " \n" +
-                "Compactness: " + this.getCompactness();
+                "Compactness: " + this.getCompactness() + "\n" +
+                "Class Name: " + this.getClassName();
     }
 }

@@ -1,14 +1,14 @@
 package ui.Panels;
 
 import pipeline.featureextraction.FeaturePayload;
-import qub.visionsystem.HistogramException;
-import util.image.ImageUtils;
+import util.FileWalker;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 /**
  * The panel used for classification UI
@@ -24,7 +24,7 @@ public class ClassificationPanel extends BasePanel {
         super(imageSize);
 
         openButton = button("Choose test image(s)", new OpenButtonListener());
-        clearButton = button("Clear", new ClearButtonListener());
+        clearButton = button("Reset Classification", new ClearButtonListener());
         actionButton = button("Classify", new ClassifyButtonListener());
 
         buttonPanel.add(openButton);
@@ -48,6 +48,9 @@ public class ClassificationPanel extends BasePanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (imageFiles != null && !imageFiles.isEmpty()) {
+
+                processedImagesArea.removeAll();
+
                 imageFiles.forEach(file -> {
 
                     appendText("Processing - \t \t File: " + file.getName(), textArea);
@@ -84,6 +87,28 @@ public class ClassificationPanel extends BasePanel {
         }
     }
 
+    protected class OpenButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int returnVal = fileChooser.showOpenDialog(ClassificationPanel.this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                if (imageFiles != null && !imageFiles.isEmpty()) {
+                    imageFiles.clear();
+                    processedImagesArea.removeAll();
+                }
+
+                File file = fileChooser.getSelectedFile();
+                imageFiles = FileWalker.discoverFilesOnPath(file.getPath());
+
+                addThumbnailsToImageArea(imageFiles, true);
+                appendText("Selected: " + file.getPath(), textArea);
+            } else {
+                appendText("Open command cancelled by user", textArea);
+            }
+        }
+    }
+
     private String toHTMLString(String classification) {
         return "<html><p></p><p><i><u>Classification</u></i></p><p></p>" +
                 "<p>" + classification + "</p></html>";
@@ -111,7 +136,6 @@ public class ClassificationPanel extends BasePanel {
                 imageFiles.clear();
                 selectedImagesArea.removeAll();
                 processedImagesArea.removeAll();
-                appendText("Cleared selection", textArea);
                 addDummyThumbnails();
                 repaintParent();
             } else {

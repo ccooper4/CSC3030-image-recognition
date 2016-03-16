@@ -11,15 +11,11 @@ import pipeline.preprocessing.IPreprocessing;
 import pipeline.preprocessing.PreProcessingImpl;
 import pipeline.segmentation.ISegmentation;
 import pipeline.segmentation.SegmentationImpl;
-import qub.visionsystem.HistogramException;
 import util.image.ImageUtils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Controls the various stages of the pipeline.
@@ -46,14 +42,6 @@ public class PipelineController implements IPipelineController {
         classification = new ClassificationImpl();
     }
 
-    private void processAnImage(BufferedImage image){
-        original = image;
-        preprocessed = preprocessing.performPreprocessing(original);
-        segmented = segmentation.performSegmentation(preprocessed);
-        postprocessed = postprocessing.performPostProcessing(segmented);
-        featurePayload = featureExtraction.performFeatureExtraction(postprocessed);
-    }
-
     public void performTraining(List<File> files) {
         for (File file : files) {
             processAnImage(ImageUtils.readInImage(file.getPath()));
@@ -64,8 +52,14 @@ public class PipelineController implements IPipelineController {
 
     public String performClassification(File file) {
         processAnImage(ImageUtils.readInImage(file.getPath()));
-        featurePayload.setClassName(file.getParentFile().getName().toUpperCase());
         return classification.classify(featurePayload);
+    }
+
+    /**
+     * Clear the previously stored training set.
+     */
+    public void clearTraining() {
+        classification.clearTraining();
     }
 
     public BufferedImage getOriginal() {
@@ -86,5 +80,13 @@ public class PipelineController implements IPipelineController {
 
     public FeaturePayload getFeaturePayload() {
         return featurePayload;
+    }
+
+    private void processAnImage(BufferedImage image){
+        original = image;
+        preprocessed = preprocessing.performPreprocessing(original);
+        segmented = segmentation.performSegmentation(preprocessed);
+        postprocessed = postprocessing.performPostProcessing(segmented);
+        featurePayload = featureExtraction.performFeatureExtraction(postprocessed);
     }
 }
