@@ -59,6 +59,7 @@ public class ClassificationPanel extends BasePanel {
         processedImagesArea = new JPanel();
         processedImagesArea.setLayout(new BoxLayout(processedImagesArea, BoxLayout.Y_AXIS));
         processedImagesAreaScrollPane = new JScrollPane(processedImagesArea);
+        processedImagesAreaScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
         JPanel middleSection = new JPanel(new BorderLayout());
         middleSection.add(textAreaScrollPane, BorderLayout.NORTH);
@@ -162,7 +163,6 @@ public class ClassificationPanel extends BasePanel {
                 resultField.setText("");
                 incorrectCount = 0;
                 correctCount = 0;
-                resultField.setVisible(false);
                 classified = false;
                 addDummyThumbnails();
                 repaintParent();
