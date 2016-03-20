@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import util.image.ImageUtils;
 import qub.visionsystem.*;
 import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 
 public class PreProcessingImpl implements IPreprocessing {
 
@@ -25,6 +26,8 @@ public class PreProcessingImpl implements IPreprocessing {
      */
     private int intercept;
 
+    private String description = "";
+
     /**
      * Constructs a new instance of the PreProcessingImpl pipeline block.
      */
@@ -35,10 +38,13 @@ public class PreProcessingImpl implements IPreprocessing {
 
     @Override
     public BufferedImage performPreprocessing(BufferedImage bufferedImage) {
+
+        description = "Preprocessing - ";
+
         try {
-            bufferedImage = ImageUtils.enhanceBrightness(bufferedImage, intercept);
-            bufferedImage = ImageUtils.enhanceContrast(bufferedImage);
-            bufferedImage = ImageUtils.performNoiseReduction(bufferedImage, neighbourhoodSize);
+            bufferedImage = enhanceBrightness(bufferedImage);
+            bufferedImage = enhanceContrast(bufferedImage);
+            bufferedImage = performNoiseReduction(bufferedImage);
         } catch (HistogramException e) {
             log.error("Histogram exception", e);
         }
@@ -46,12 +52,29 @@ public class PreProcessingImpl implements IPreprocessing {
         return bufferedImage;
     }
 
+    private BufferedImage enhanceBrightness(BufferedImage bufferedImage) {
+        description += " Enhanced brightness, intercept of " + intercept;
+        return ImageUtils.enhanceBrightness(bufferedImage, intercept);
+    }
+
+    private BufferedImage enhanceContrast(BufferedImage bufferedImage) throws HistogramException {
+        description += " Enhanced contrast via histogram equalization";
+        return ImageUtils.enhanceContrast(bufferedImage);
+    }
+
+    private BufferedImage performNoiseReduction(BufferedImage bufferedImage) {
+        description += " Reduced noise with a neighbourhood size of " + neighbourhoodSize;
+        return ImageUtils.performNoiseReduction(bufferedImage, neighbourhoodSize);
+    }
+
+
+
     /**
      * Describes this pipeline stage.
      * @return
      */
     @Override
     public String describePipelineStage() {
-        return "Preprocessing - enhanced brightness with an intercept of " + intercept + ", enhanced contrast and reduced noise with a size of " + neighbourhoodSize;
+        return description;
     }
 }

@@ -38,7 +38,7 @@ public class PostprocessingImpl implements IPostprocessing{
      * @return The Image after opening has been performed.
      */
     public BufferedImage performOpeningThenClosing(BufferedImage source) {
-        stageDescription += "Open then closing with a mask size of " + maskSize + "\n";
+        stageDescription += "Open then closing with a mask size of " + maskSize + ". ";
         source = ImageUtils.open(source, maskSize);
         return ImageUtils.close(source, maskSize);
     }
@@ -49,7 +49,7 @@ public class PostprocessingImpl implements IPostprocessing{
      * @return The Image after opening has been performed.
      */
     public BufferedImage performClosingThenOpening(BufferedImage source){
-        stageDescription += "Closing then opening with a mask size of " + maskSize + "\n";
+        stageDescription += "Closing then opening with a mask size of " + maskSize + ". ";
         source = ImageUtils.close(source, maskSize);
         return ImageUtils.open(source, maskSize);
     }
