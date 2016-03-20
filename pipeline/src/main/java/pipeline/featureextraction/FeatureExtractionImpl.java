@@ -27,5 +27,14 @@ public class FeatureExtractionImpl implements IFeatureExtraction {
         return new FeaturePayload(area, perimeter);
     }
 
+    /**
+     * Describes this stage of the pipeline.
+     * @return The description.
+     */
+    @Override
+    public String describePipelineStage() {
+        return "Feature Extraction for area and perimeter. Perimeter mask size: " + perimeterMask;
+    }
+
 
 }

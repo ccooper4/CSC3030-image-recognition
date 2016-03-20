@@ -45,4 +45,13 @@ public class PreProcessingImpl implements IPreprocessing {
 
         return bufferedImage;
     }
+
+    /**
+     * Describes this pipeline stage.
+     * @return
+     */
+    @Override
+    public String describePipelineStage() {
+        return "Preprocessing - enhanced brightness with an intercept of " + intercept + ", enhanced contrast and reduced noise with a size of " + neighbourhoodSize;
+    }
 }

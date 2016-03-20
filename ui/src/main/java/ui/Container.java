@@ -3,6 +3,7 @@ package ui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ui.Panels.ClassificationPanel;
+import ui.Panels.ResultPanel;
 import ui.Panels.TrainingPanel;
 
 import javax.swing.*;
@@ -16,6 +17,8 @@ public class Container {
 
     private TrainingPanel trainingPanel;
     private ClassificationPanel classificationPanel;
+    private ResultPanel resultPanel;
+    private ResultTableModel resultsModel;
 
     private final int MIN_WIDTH = 1300;
     private final int MIN_HEIGHT = 600;
@@ -26,8 +29,12 @@ public class Container {
      * Constructor.
      */
     public Container() {
+
+        resultsModel = new ResultTableModel();
+
         trainingPanel = new TrainingPanel();
-        classificationPanel = new ClassificationPanel();
+        classificationPanel = new ClassificationPanel(resultsModel);
+        resultPanel = new ResultPanel(resultsModel);
     }
 
     /**
@@ -41,6 +48,7 @@ public class Container {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab(getTabHTML("Training"), null, trainingPanel, "The training section");
         tabbedPane.addTab(getTabHTML("Classification"), null, classificationPanel, "The classification section");
+        tabbedPane.addTab(getTabHTML("Results"), null, resultPanel, "The result section");
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         // Create a panel and add the tabbed pane to it

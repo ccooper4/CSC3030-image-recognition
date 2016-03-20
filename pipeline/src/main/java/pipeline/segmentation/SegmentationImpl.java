@@ -64,5 +64,14 @@ public class SegmentationImpl implements ISegmentation {
         return segmentedImage;
     }
 
+    /**
+     * Describes this pipeline stage.
+     * @return
+     */
+    @Override
+    public String describePipelineStage() {
+        return "Segmentation - performed automatic segmentation with an A value of " + segmentationConstant;
+    }
+
     // </editor-fold>
 }

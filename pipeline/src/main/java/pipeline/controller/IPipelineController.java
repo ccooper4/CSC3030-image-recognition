@@ -1,5 +1,6 @@
 package pipeline.controller;
 
+import pipeline.PipelineDescription;
 import pipeline.featureextraction.FeaturePayload;
 
 import java.awt.image.BufferedImage;
@@ -35,4 +36,6 @@ public interface IPipelineController {
     BufferedImage getPostprocessed();
 
     FeaturePayload getFeaturePayload();
+
+    PipelineDescription describePipeline();
 }

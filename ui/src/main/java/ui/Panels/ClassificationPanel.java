@@ -1,6 +1,8 @@
 package ui.Panels;
 
+import pipeline.PipelineDescription;
 import pipeline.featureextraction.FeaturePayload;
+import ui.ResultTableModel;
 import util.FileWalker;
 import util.ResourceUtils;
 import util.StringConstants;
@@ -12,6 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * The panel used for classification UI
@@ -31,7 +36,9 @@ public class ClassificationPanel extends BasePanel {
     private int correctCount = 0;
     private int incorrectCount = 0;
 
-    public ClassificationPanel() {
+    private ResultTableModel resultModel;
+
+    public ClassificationPanel(ResultTableModel model) {
         super(imageSize);
 
         openButton = button("Choose test image(s)", new OpenButtonListener());
@@ -42,6 +49,8 @@ public class ClassificationPanel extends BasePanel {
         toggleButton.addActionListener(new ToggleButtonListener());
 
         JButton analysisButton = button("Analyse", new AnaylsisButtonListener());
+
+        JButton storeResultButton = button("Store Result", new StoreResultButtonListener());
 
         resultField = new JTextArea();
         resultField.setText("");
@@ -55,6 +64,7 @@ public class ClassificationPanel extends BasePanel {
         buttonPanel.add(analysisButton);
         buttonPanel.add(resultField);
         buttonPanel.add(clearButton);
+        buttonPanel.add(storeResultButton);
 
         processedImagesArea = new JPanel();
         processedImagesArea.setLayout(new BoxLayout(processedImagesArea, BoxLayout.Y_AXIS));
@@ -68,6 +78,8 @@ public class ClassificationPanel extends BasePanel {
         add(buttonPanel, BorderLayout.NORTH);
         add(middleSection, BorderLayout.CENTER);
         add(selectedImagesAreaScrollPane, BorderLayout.SOUTH);
+
+        resultModel = model;
     }
 
     private class ClassifyButtonListener implements ActionListener {
@@ -191,6 +203,33 @@ public class ClassificationPanel extends BasePanel {
                 drawProcessedImagePanel();
             }
         }
+    }
+
+    /**
+     * The listener for the store result button.
+     */
+    private class StoreResultButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+
+            if (resultField.getText() == "") {
+                JOptionPane.showMessageDialog(ClassificationPanel.this, "The result analysis must be completed before a result can be stored.");
+                return;
+            }
+
+            PipelineDescription description = pipelineController.describePipeline();
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+
+            String[] rowData = {dateFormat.format(date), description.getPreProcessingDescription(), description.getSegmentationDescription(), description.getPostProcessingDescription(), description.getFeatureExtractionDescription(), description.getClassifierDescription(), resultField.getText() };
+
+            resultModel.addRow(rowData);
+
+            JOptionPane.showMessageDialog(ClassificationPanel.this, "The result has been successfully stored.");
+        }
+
     }
 
     /**

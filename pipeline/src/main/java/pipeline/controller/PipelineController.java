@@ -1,5 +1,6 @@
 package pipeline.controller;
 
+import pipeline.PipelineDescription;
 import pipeline.classification.ClassificationImpl;
 import pipeline.classification.IClassification;
 import pipeline.featureextraction.FeatureExtractionImpl;
@@ -80,6 +81,23 @@ public class PipelineController implements IPipelineController {
 
     public FeaturePayload getFeaturePayload() {
         return featurePayload;
+    }
+
+    /**
+     * Generates a description of the current pipeline.
+     * @return The completed description.
+     */
+    public PipelineDescription describePipeline() {
+
+        PipelineDescription description = new PipelineDescription();
+
+        description.setPreProcessingDescription(preprocessing.describePipelineStage());
+        description.setSegmentationDescription(segmentation.describePipelineStage());
+        description.setPostProcessingDescription(postprocessing.describePipelineStage());
+        description.setFeatureExtractionDescription(featureExtraction.describePipelineStage());
+        description.setClassifierDescription(classification.describePipelineStage());
+
+        return description;
     }
 
     private void processAnImage(BufferedImage image){

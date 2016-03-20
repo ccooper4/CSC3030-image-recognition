@@ -63,6 +63,14 @@ public class ClassificationImpl implements IClassification {
     }
 
     /**
+     * Describes this stage of the pipeline.
+     * @return The description.
+     */
+    public String describePipelineStage() {
+        return "K Nearest Neighbor Classifier - K = " + k + ", Trained with " + trainingSet.size() + " images";
+    }
+
+    /**
      * Order the test set in order of closeness and get the resultant class name.
      * @return The result classification string
      */
