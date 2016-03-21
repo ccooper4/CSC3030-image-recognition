@@ -12,16 +12,16 @@
 
 #### Tutorial
 * Press *"Choose training image(s)"* to select the directory of images to train the system
-![Image1](tutorial/directory_selection.png "Training directory selection")
+![Image1](tutorial/directory_selection.PNG "Training directory selection")
 * Press *"Train System"* to train the system
-![Image2](tutorial/training.png "Training")
+![Image2](tutorial/training.PNG "Training")
 * Move to the classification tab and press *"Choose test image(s)"* to select the directory of images to test the system
-![Image3](tutorial/directory_selection2.png "Test directory selection")
+![Image3](tutorial/directory_selection2.PNG "Test directory selection")
 * Press *"Classify"* to test the system
-![Image4](tutorial/classification.png "Classification")
+![Image4](tutorial/classification.PNG "Classification")
 * Press *"Histogram Mode"* to activate histogram mode
-![Image5](tutorial/histogram_mode.png "Histogram mode")
+![Image5](tutorial/histogram_mode.PNG "Histogram mode")
 * To analyse the results, use the correct / incorrect buttons and press *"Analyse"* to get recognition rate
-![Image6](tutorial/analysis.png "Recognition Rate")
+![Image6](tutorial/analysis.PNG "Recognition Rate")
 * To save the result press *"Store Result"* and navigate to the results tab
-![Image7](tutorial/results.png "Results")
+![Image7](tutorial/results.PNG "Results")
