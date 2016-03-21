@@ -2,6 +2,7 @@ package pipeline.segmentation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pipeline.BasePipelineArtifact;
 import util.ConfigurationUtils;
 import util.StringConstants;
 import util.image.ImageUtils;
@@ -12,7 +13,7 @@ import java.awt.image.BufferedImage;
 /**
  * Provides an implementation for the Segmentation stage of the Image Pipeline.
  */
-public class SegmentationImpl implements ISegmentation {
+public class SegmentationImpl extends BasePipelineArtifact implements ISegmentation {
 
     // <editor-fold desc="Constructor">
 
@@ -70,7 +71,8 @@ public class SegmentationImpl implements ISegmentation {
      */
     @Override
     public String describePipelineStage() {
-        return "Segmentation - performed automatic segmentation with an A value of " + segmentationConstant;
+        description = wrapDescription("Automatic - A value = " + segmentationConstant);
+        return wrapPipelineStage(description);
     }
 
     // </editor-fold>

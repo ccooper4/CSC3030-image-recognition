@@ -1,12 +1,13 @@
 package pipeline.featureextraction;
 
+import pipeline.BasePipelineArtifact;
 import util.ConfigurationUtils;
 import util.StringConstants;
 import util.image.ImageUtils;
 
 import java.awt.image.BufferedImage;
 
-public class FeatureExtractionImpl implements IFeatureExtraction {
+public class FeatureExtractionImpl extends BasePipelineArtifact implements IFeatureExtraction {
 
     private int perimeterMask = 0;
 
@@ -33,8 +34,9 @@ public class FeatureExtractionImpl implements IFeatureExtraction {
      */
     @Override
     public String describePipelineStage() {
-        return "Feature Extraction for area and perimeter. Perimeter mask size: " + perimeterMask;
+        description += wrapDescription("Area");
+        description += wrapDescription("Perimeter, mask = " + perimeterMask);
+        description += wrapDescription("Compactness");
+        return wrapPipelineStage(description);
     }
-
-
 }

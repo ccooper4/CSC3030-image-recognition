@@ -1,5 +1,6 @@
 package pipeline.preprocessing;
 
+import pipeline.BasePipelineArtifact;
 import util.ConfigurationUtils;
 import util.StringConstants;
 import org.slf4j.Logger;
@@ -9,7 +10,7 @@ import qub.visionsystem.*;
 import java.awt.image.BufferedImage;
 import java.nio.Buffer;
 
-public class PreProcessingImpl implements IPreprocessing {
+public class PreProcessingImpl extends BasePipelineArtifact implements IPreprocessing {
 
     /**
      * The logger for this class.
@@ -26,8 +27,6 @@ public class PreProcessingImpl implements IPreprocessing {
      */
     private int intercept;
 
-    private String description = "";
-
     /**
      * Constructs a new instance of the PreProcessingImpl pipeline block.
      */
@@ -38,8 +37,7 @@ public class PreProcessingImpl implements IPreprocessing {
 
     @Override
     public BufferedImage performPreprocessing(BufferedImage bufferedImage) {
-
-        description = "Preprocessing - ";
+        description = "";
 
         try {
             bufferedImage = enhanceBrightness(bufferedImage);
@@ -53,21 +51,19 @@ public class PreProcessingImpl implements IPreprocessing {
     }
 
     private BufferedImage enhanceBrightness(BufferedImage bufferedImage) {
-        description += " Enhanced brightness, intercept of " + intercept;
+        description += wrapDescription("Enhanced brightness - Intercept = " + intercept);
         return ImageUtils.enhanceBrightness(bufferedImage, intercept);
     }
 
     private BufferedImage enhanceContrast(BufferedImage bufferedImage) throws HistogramException {
-        description += " Enhanced contrast via histogram equalization";
+        description += wrapDescription("Enhanced contrast - Histogram equalization");
         return ImageUtils.enhanceContrast(bufferedImage);
     }
 
     private BufferedImage performNoiseReduction(BufferedImage bufferedImage) {
-        description += " Reduced noise with a neighbourhood size of " + neighbourhoodSize;
+        description += wrapDescription("Reduced noise - Neighbourhood size = " + neighbourhoodSize);
         return ImageUtils.performNoiseReduction(bufferedImage, neighbourhoodSize);
     }
-
-
 
     /**
      * Describes this pipeline stage.
@@ -75,6 +71,6 @@ public class PreProcessingImpl implements IPreprocessing {
      */
     @Override
     public String describePipelineStage() {
-        return description;
+        return wrapPipelineStage(description);
     }
 }

@@ -2,12 +2,13 @@ package pipeline.classification;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pipeline.BasePipelineArtifact;
 import pipeline.featureextraction.FeaturePayload;
 import util.ConfigurationUtils;
 import util.StringConstants;
 import java.util.*;
 
-public class ClassificationImpl implements IClassification {
+public class ClassificationImpl extends BasePipelineArtifact implements IClassification {
 
     /**
      * The logger for this class.
@@ -66,8 +67,13 @@ public class ClassificationImpl implements IClassification {
      * Describes this stage of the pipeline.
      * @return The description.
      */
+    @Override
     public String describePipelineStage() {
-        return "K Nearest Neighbor Classifier - K = " + k + ", Trained with " + trainingSet.size() + " images";
+        description += wrapDescription("K Nearest Neighbor Classifier");
+        description += wrapDescription("K = " + k);
+        description += wrapDescription("Trained with " + trainingSet.size() + " images");
+
+        return wrapPipelineStage(description);
     }
 
     /**

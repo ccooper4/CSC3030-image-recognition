@@ -2,13 +2,14 @@ package pipeline.postprocessing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pipeline.BasePipelineArtifact;
 import util.ConfigurationUtils;
 import util.StringConstants;
 import util.image.ImageUtils;
 
 import java.awt.image.BufferedImage;
 
-public class PostprocessingImpl implements IPostprocessing{
+public class PostprocessingImpl extends BasePipelineArtifact implements IPostprocessing {
 
     /**
      * The logger for this class.
@@ -19,11 +20,6 @@ public class PostprocessingImpl implements IPostprocessing{
      * The size of the mask to use
      */
     private int maskSize;
-
-    /**
-     * The description of this stage.
-     */
-    private String stageDescription;
 
     /**
      * Constructs a new instance of the PostprocessingImpl pipeline block.
@@ -37,8 +33,8 @@ public class PostprocessingImpl implements IPostprocessing{
      * @param source The input image.
      * @return The Image after opening has been performed.
      */
-    public BufferedImage performOpeningThenClosing(BufferedImage source) {
-        stageDescription += "Open then closing with a mask size of " + maskSize + ". ";
+    private BufferedImage performOpeningThenClosing(BufferedImage source) {
+        description += wrapDescription("Opening then closing. Mask size = " + maskSize);
         source = ImageUtils.open(source, maskSize);
         return ImageUtils.close(source, maskSize);
     }
@@ -48,8 +44,9 @@ public class PostprocessingImpl implements IPostprocessing{
      * @param source The input image.
      * @return The Image after opening has been performed.
      */
-    public BufferedImage performClosingThenOpening(BufferedImage source){
-        stageDescription += "Closing then opening with a mask size of " + maskSize + ". ";
+    private BufferedImage performClosingThenOpening(BufferedImage source){
+        description += wrapDescription("Closing then opening");
+        description += wrapDescription("Mask size = " + maskSize);
         source = ImageUtils.close(source, maskSize);
         return ImageUtils.open(source, maskSize);
     }
@@ -61,7 +58,7 @@ public class PostprocessingImpl implements IPostprocessing{
      */
     @Override
     public BufferedImage performPostProcessing(BufferedImage bufferedImage) {
-        stageDescription = "Post processing";
+        description = "";
         //return performOpeningThenClosing(bufferedImage); //Image with holes? run this
         return performClosingThenOpening(bufferedImage); //Noisy image? run this
     }
@@ -72,7 +69,7 @@ public class PostprocessingImpl implements IPostprocessing{
      */
     @Override
     public String describePipelineStage() {
-        return stageDescription;
+        return wrapPipelineStage(description);
     }
 
 }

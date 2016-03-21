@@ -11,7 +11,6 @@ public class StringConstants {
     public static final String PREPROCESSING_INTERCEPT = "preprocessingIntercept";
     public static final String PREPROCESSING_NEIGHBOURHOOD_SIZE = "preprocessingneighbourhoodSize";
 
-
     // Segmentation
     public static final String SEGMENTATION_CONSTANT_SETTING = "segmenatationConstant";
 
@@ -23,4 +22,6 @@ public class StringConstants {
 
     // Classification
     public static final String K_VALUE = "kValue";
+
+    public static final String RESULT_FILE="resultFile";
 }
