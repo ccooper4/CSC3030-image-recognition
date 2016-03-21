@@ -1,0 +1,35 @@
+PreProc-
+--
+
+Segmentation:
+A 
+0.5
+1 
+0.25 
+0.75 
+
+Post proc: 
+Close -> Open. 
+
+Open -> Close 
+
+Mask Size = 3 
+
+Mask Size = 2
+Mask Size = 5
+Mask Size = 10 
+
+Feature Extraction 
+
+perimeterMaskSize=3 
+2
+5
+7
+
+kNN
+3 
+2
+5
+
+
+
