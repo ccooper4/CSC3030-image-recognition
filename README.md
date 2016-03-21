@@ -3,7 +3,9 @@
 
 ### Table of Contents
 [Instructions](#Instructions)
+
 [Class breakdown](#hierarchy)
+
 [Tutorial](#tutorial)
 
 ---
@@ -23,15 +25,15 @@
 
 ### Class Hierarchy
 #### Modules
-![modules](resources/diagrams/Modules.PNG)
+![modules](resources/diagrams/Modules.PNG?raw=true "Modules")
 #### UI Module
-![ui](resources/diagrams/UI.PNG)
+![ui](resources/diagrams/UI.PNG?raw=true "UI")
 #### Shared Module
-![shared](resources/diagrams/Shared.PNG)
+![shared](resources/diagrams/Shared.PNG?raw=true "Shared")
 #### Pipeline Module
-![pipeline](resources/diagrams/Pipeline.PNG)
+![pipeline](resources/diagrams/Pipeline.PNG?raw=true "Pipeline")
 #### Project
-![project](resources/diagrams/Project.PNG)
+![project](resources/diagrams/Project.png?raw=true "Project")
 
 ---
 
@@ -39,22 +41,22 @@
 
 ### Tutorial
 * Press *"Choose training image(s)"* to select the directory of images to train the system
-![Image1](resources/tutorial/directory_selection.PNG "Training directory selection")
+![Image1](resources/tutorial/directory_selection.PNG?raw=true "Training directory selection")
 
 * Press *"Train System"* to train the system
-![Image2](resources/tutorial/training.PNG "Training")
+![Image2](resources/tutorial/training.PNG?raw=true "Training")
 
 * Move to the classification tab and press *"Choose test image(s)"* to select the directory of images to test the system
-![Image3](resources/tutorial/directory_selection2.PNG "Test directory selection")
+![Image3](resources/tutorial/directory_selection2.PNG?raw=true "Test directory selection")
 
 * Press *"Classify"* to test the system
-![Image4](resources/tutorial/classification.PNG "Classification")
+![Image4](resources/tutorial/classification.PNG?raw=true "Classification")
 
 * Press *"Histogram Mode"* to activate histogram mode
-![Image5](resources/tutorial/histogram_mode.PNG "Histogram mode")
+![Image5](resources/tutorial/histogram_mode.PNG?raw=true "Histogram mode")
 
 * To analyse the results, use the correct / incorrect buttons and press *"Analyse"* to get recognition rate
 ![Image6](resources/tutorial/analysis.PNG "Recognition Rate")
 
 * To save the result press *"Store Result"* and navigate to the results tab
-![Image7](resourcestutorial/results.PNG "Results")
+![Image7](resources/tutorial/results.PNG?raw=true "Results")
