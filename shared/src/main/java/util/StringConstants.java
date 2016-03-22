@@ -11,6 +11,7 @@ public class StringConstants {
     public static final String PREPROCESSING_INTERCEPT = "preprocessingIntercept";
     public static final String PREPROCESSING_NEIGHBOURHOOD_SIZE = "preprocessingneighbourhoodSize";
 
+
     // Segmentation
     public static final String SEGMENTATION_CONSTANT_SETTING = "segmenatationConstant";
 
