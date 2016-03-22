@@ -34,6 +34,7 @@ public class FeatureExtractionImpl extends BasePipelineArtifact implements IFeat
      */
     @Override
     public String describePipelineStage() {
+        description="";
         description += wrapDescription("Area");
         description += wrapDescription("Perimeter, mask = " + perimeterMask);
         description += wrapDescription("Compactness");

@@ -69,6 +69,7 @@ public class ClassificationImpl extends BasePipelineArtifact implements IClassif
      */
     @Override
     public String describePipelineStage() {
+        description = "";
         description += wrapDescription("K Nearest Neighbor Classifier");
         description += wrapDescription("K = " + k);
         description += wrapDescription("Trained with " + trainingSet.size() + " images");

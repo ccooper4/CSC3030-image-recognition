@@ -71,6 +71,7 @@ public class SegmentationImpl extends BasePipelineArtifact implements ISegmentat
      */
     @Override
     public String describePipelineStage() {
+        description="";
         description = wrapDescription("Automatic - A value = " + segmentationConstant);
         return wrapPipelineStage(description);
     }
