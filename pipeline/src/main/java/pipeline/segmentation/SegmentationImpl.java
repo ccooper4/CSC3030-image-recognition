@@ -9,6 +9,7 @@ import util.StringConstants;
 import util.image.ImageUtils;
 import util.image.LUTFactory;
 
+import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
 import java.nio.Buffer;
 
@@ -24,7 +25,7 @@ public class SegmentationImpl extends BasePipelineArtifact implements ISegmentat
      */
     public SegmentationImpl() {
 
-        segmentationConstant = Integer.parseInt(ConfigurationUtils.loadProperty(StringConstants.SEGMENTATION_CONSTANT_SETTING));
+        segmentationConstant = Float.parseFloat(ConfigurationUtils.loadProperty(StringConstants.SEGMENTATION_CONSTANT_SETTING));
 
     }
 
@@ -40,7 +41,7 @@ public class SegmentationImpl extends BasePipelineArtifact implements ISegmentat
     /**
      * The constant value of A to be used for segmentation.
      */
-    private int segmentationConstant = 1;
+    private float segmentationConstant = 1;
 
     // </editor-fold>
 
