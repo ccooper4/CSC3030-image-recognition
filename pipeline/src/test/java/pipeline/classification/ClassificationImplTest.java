@@ -16,9 +16,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by Chris on 23/03/2016.
- */
 public class ClassificationImplTest {
     public BufferedImage testingImage;
     public FeatureExtractionImpl featureExtraction;
@@ -29,16 +26,20 @@ public class ClassificationImplTest {
     public final int perimeter = 1740;
     public final int compactness = 128;
     public final int variance = 5329;
-    public String expectedClassification = "Apple";
+    public String expectedClassification = "APPLE";
     public List<FeaturePayload> payloads;
 
     @Before
-    public void loadTestingImage() {
+    /**
+     * Setup method to set features and create class
+     */
+    public void setup() {
         featureExtraction = new FeatureExtractionImpl();
         featurePayload = new FeaturePayload();
         featurePayload.setArea(area);
         featurePayload.setPerimeter(perimeter);
         featurePayload.setCompactness(compactness);
+        featurePayload.setTextureVariance(variance);
 
         ConfigurationUtils.writeProperty(StringConstants.K_VALUE, "3");
         classification = new ClassificationImpl();
@@ -49,11 +50,17 @@ public class ClassificationImplTest {
         }
     }
 
+    /**
+     * Method to test that the classification is producing correct results
+     */
     @Test
     public void testPerformClassification() {
         assertEquals(expectedClassification, classification.classify(featurePayload));
     }
 
+    /**
+     * Build the set of payloads to compare the test image against
+     */
     public void buildPayload()
     {
         FeaturePayload feature1 = new FeaturePayload();
