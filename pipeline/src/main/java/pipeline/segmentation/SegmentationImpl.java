@@ -73,6 +73,9 @@ public class SegmentationImpl extends BasePipelineArtifact implements ISegmentat
      */
     private BufferedImage directlySegment(BufferedImage bufferedImage) {
 
+        if (description != "") {
+            description = wrapDescription("Brightness based segmentation.");
+        }
         int thresholdValue = ImageUtils.calculateAutomaticThresholdValue(bufferedImage, segmentationConstant);
 
         short[] segmentationLookupUpTable = LUTFactory.segmentationLUT(thresholdValue);
@@ -89,6 +92,8 @@ public class SegmentationImpl extends BasePipelineArtifact implements ISegmentat
      */
     private BufferedImage edgeSegment(BufferedImage bufferedImage)
     {
+        description = wrapDescription("Edge detection based segmentation");
+
         BufferedImage edges = getMagnitudeImage(bufferedImage);
 
         BufferedImage thresholded = directlySegment(edges);
@@ -117,8 +122,7 @@ public class SegmentationImpl extends BasePipelineArtifact implements ISegmentat
      */
     @Override
     public String describePipelineStage() {
-        description="";
-        description = wrapDescription("Automatic - A value = " + segmentationConstant);
+        description += wrapDescription("Automatic - A value = " + segmentationConstant);
         return wrapPipelineStage(description);
     }
 
