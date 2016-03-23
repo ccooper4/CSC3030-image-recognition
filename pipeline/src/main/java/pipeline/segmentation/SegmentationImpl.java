@@ -116,6 +116,7 @@ public class SegmentationImpl extends BasePipelineArtifact implements ISegmentat
     public BufferedImage performSegmentation(BufferedImage bufferedImage) {
 
         return directlySegment(bufferedImage);
+//        return edgeSegment(bufferedImage);
     }
 
     /**

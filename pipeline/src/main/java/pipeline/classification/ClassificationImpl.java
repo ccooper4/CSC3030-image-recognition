@@ -61,6 +61,7 @@ public class ClassificationImpl extends BasePipelineArtifact implements IClassif
         }
 
         return classifyPayload(testPayload);
+//        return classifyPayload2D(testPayload);
     }
 
     /**

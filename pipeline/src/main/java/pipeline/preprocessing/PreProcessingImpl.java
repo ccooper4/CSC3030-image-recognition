@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.image.ImageUtils;
 import qub.visionsystem.*;
-
-import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 
 public class PreProcessingImpl extends BasePipelineArtifact implements IPreprocessing {
 
@@ -50,10 +47,16 @@ public class PreProcessingImpl extends BasePipelineArtifact implements IPreproce
         description = "";
         try {
 
+            // Use brightness based with this config
             bufferedImage = enhanceBrightness(bufferedImage);
-            bufferedImage = enhanceContrast(bufferedImage);     // Best Results
-//            bufferedImage = enhanceContrastPL(bufferedImage);   // Best Segmentation
+            bufferedImage = enhanceContrast(bufferedImage);
             bufferedImage = performNoiseReduction(bufferedImage);
+
+            // Use edge based with this config
+//            bufferedImage = enhanceBrightness(bufferedImage);
+//            bufferedImage = enhanceContrast(bufferedImage);
+//            bufferedImage = performNoiseReductionMask(bufferedImage);
+
         } catch (Exception e) {
             log.error("Histogram exception", e);
         }
@@ -89,8 +92,12 @@ public class PreProcessingImpl extends BasePipelineArtifact implements IPreproce
     }
 
     private BufferedImage performNoiseReductionMask(BufferedImage bufferedImage) {
-        mask = ImageUtils.createMask(4,1/9f);
-        description += wrapDescription("Reduced Noise"  );
+        int maskSize = 4;
+        float maskValue = 1/9f;
+        mask = ImageUtils.createMask(maskSize, maskValue);
+        description += wrapDescription("Reduced Noise using mask");
+        description += wrapDescription("Mask size: " + maskSize);
+        description += wrapDescription("Mask value: " + maskValue );
         return ImageUtils.performNoiseReduction(bufferedImage, mask);
     }
 
