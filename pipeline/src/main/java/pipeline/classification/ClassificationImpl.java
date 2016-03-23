@@ -81,6 +81,30 @@ public class ClassificationImpl extends BasePipelineArtifact implements IClassif
      * Order the test set in order of closeness and get the resultant class name.
      * @return The result classification string
      */
+    private String classifyPayload2D(FeaturePayload testPayload){
+        List<Neighbour> neighbours = new ArrayList<>();
+
+        for (FeaturePayload payload  : trainingSet) {
+
+            //X = compactness, Y = variance.
+            int compactnessDiff = Math.abs(payload.getCompactness() - testPayload.getCompactness());
+            int varianceDiff = Math.abs(payload.getTextureVariance() - testPayload.getTextureVariance());
+
+            double difference = Math.sqrt((compactnessDiff * compactnessDiff) + (varianceDiff * varianceDiff));
+
+            Neighbour tempNeighbour = new Neighbour();
+            tempNeighbour.setClassName(payload.getClassName());
+            tempNeighbour.setDifference(difference);
+            neighbours.add(tempNeighbour);
+        }
+
+        return calculateFrequency(neighbours);
+    }
+
+    /**
+     * Order the test set in order of closeness and get the resultant class name.
+     * @return The result classification string
+     */
     private String classifyPayload(FeaturePayload testPayload){
         List<Neighbour> neighbours = new ArrayList<>();
 

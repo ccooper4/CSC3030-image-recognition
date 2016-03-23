@@ -17,15 +17,19 @@ public class FeatureExtractionImpl extends BasePipelineArtifact implements IFeat
 
     /**
      * Performs feature extraction on an image.
-     * @param bufferedImage The image to extract features from.
+     * @param segmentedImage The image to extract features from.
+     * @param preProcImage The pre processed image.
      * @return              The extracted features.
      */
     @Override
-    public FeaturePayload performFeatureExtraction(BufferedImage bufferedImage) {
-        int area = ImageUtils.calculateArea(bufferedImage);
-        int perimeter = ImageUtils.calculatePerimeter(bufferedImage, area, perimeterMask);
+    public FeaturePayload performFeatureExtraction(BufferedImage segmentedImage, BufferedImage preProcImage) {
+        int area = ImageUtils.calculateArea(segmentedImage);
+        int perimeter = ImageUtils.calculatePerimeter(segmentedImage, area, perimeterMask);
+        int mean = ImageUtils.calculateMean(preProcImage);
+        int sd = ImageUtils.calculateStandardDeviation(preProcImage, mean);
+        int textureVariance = (int)Math.pow(sd, 2);
 
-        return new FeaturePayload(area, perimeter);
+        return new FeaturePayload(area, perimeter, textureVariance);
     }
 
     /**

@@ -339,7 +339,8 @@ public class ClassificationPanel extends BasePanel {
         return "<html><p></p><p><i><u>Feature Extraction</u></i></p><p></p>" +
                 "<p>Area: " + payload.getArea() + "</p>" +
                 "<p>Perimeter: " + payload.getPerimeter() + "</p>" +
-                "<p>Compactness: " + payload.getCompactness() + "</p></html>";
+                "<p>Compactness: " + payload.getCompactness() + "</p>" +
+                "<p>Variance: " + payload.getTextureVariance() + "</p></html>";
     }
 
     /**

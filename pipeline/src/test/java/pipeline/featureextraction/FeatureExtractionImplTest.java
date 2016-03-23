@@ -21,6 +21,7 @@ public class FeatureExtractionImplTest {
     public final int expectedArea = 12605;
     public final int expectedPerimeter = 1075;
     public final int expectedCompactness = 91;
+    public final int expectedVariance = 10000;
 
     @Before
     public void loadTestingImage() {
@@ -30,11 +31,12 @@ public class FeatureExtractionImplTest {
         expectedFeaturePayload.setArea(expectedArea);
         expectedFeaturePayload.setPerimeter(expectedPerimeter);
         expectedFeaturePayload.setCompactness(expectedCompactness);
+        expectedFeaturePayload.setTextureVariance(expectedVariance);
     }
 
     @Test
     public void testPerformFeatureExtraction() {
-        FeaturePayload actualFeaturePayload = featureExtraction.performFeatureExtraction(testingImage);
+        FeaturePayload actualFeaturePayload = featureExtraction.performFeatureExtraction(testingImage, testingImage);
         assertEquals(expectedFeaturePayload, actualFeaturePayload);
     }
 }

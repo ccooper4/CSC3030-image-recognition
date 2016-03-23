@@ -8,8 +8,9 @@ public interface IFeatureExtraction extends IPipelineArtifact {
 
     /**
      * Performs feature extraction on an image.
-     * @param bufferedImage The image to extract features from.
+     * @param segmentedImage The image to extract features from.
+     * @param preProcImage The pre processed image.
      * @return              The extracted features.
      */
-    FeaturePayload performFeatureExtraction(BufferedImage bufferedImage);
+    FeaturePayload performFeatureExtraction(BufferedImage segmentedImage, BufferedImage preProcImage);
 }

@@ -14,14 +14,17 @@ public class FeaturePayload {
     private Integer area = null;
     private Integer perimeter = null;
     private Integer compactness = null;
+
+    private Integer textureVariance = null;
     private String className;
 
     public FeaturePayload() {
     }
 
-    public FeaturePayload(Integer area, Integer perimeter) {
+    public FeaturePayload(Integer area, Integer perimeter, Integer variance) {
         this.area = area;
         this.perimeter = perimeter;
+        this.textureVariance = variance;
         calculateCompactness();
     }
 
@@ -58,6 +61,12 @@ public class FeaturePayload {
     }
 
     /**
+     * Sets the texture variance.
+     * @param textureVariance
+     */
+    public void setTextureVariance(Integer textureVariance) { this.textureVariance = textureVariance; }
+
+    /**
      *
      * @return
      */
@@ -80,6 +89,12 @@ public class FeaturePayload {
     public Integer getPerimeter() {
         return perimeter;
     }
+
+    /**
+     * Gets the texture variance.
+     * @return
+     */
+    public Integer getTextureVariance() { return textureVariance; }
 
     /**
      * Get the compactness. A measure of how circular an image is.
@@ -124,6 +139,7 @@ public class FeaturePayload {
         return Objects.equals(this.area, payload.getArea())
                 && Objects.equals(this.perimeter, payload.getPerimeter())
                 && Objects.equals(this.compactness, payload.getCompactness())
+                && Objects.equals(this.textureVariance, payload.getTextureVariance())
                 && Objects.equals(this.className, payload.getClassName());
     }
 
@@ -133,6 +149,7 @@ public class FeaturePayload {
                 "Area: " + this.getArea() + " \n" +
                 "Perimeter: " + this.getPerimeter() + " \n" +
                 "Compactness: " + this.getCompactness() + "\n" +
+                "Variance: " + this.getTextureVariance() + "\n" +
                 "Class Name: " + this.getClassName();
     }
 }

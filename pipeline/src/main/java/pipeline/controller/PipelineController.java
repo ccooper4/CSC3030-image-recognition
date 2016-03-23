@@ -105,6 +105,6 @@ public class PipelineController implements IPipelineController {
         preprocessed = preprocessing.performPreprocessing(original);
         segmented = segmentation.performSegmentation(preprocessed);
         postprocessed = postprocessing.performPostProcessing(segmented);
-        featurePayload = featureExtraction.performFeatureExtraction(postprocessed);
+        featurePayload = featureExtraction.performFeatureExtraction(postprocessed, preprocessed);
     }
 }
