@@ -81,5 +81,21 @@ public class ClassificationImplTest {
         FeaturePayload feature8 = new FeaturePayload(23523, 1740, 5329);
         feature8.setClassName("APPLE");
         payloads.add(feature8);
+
+        FeaturePayload feature9 = new FeaturePayload(22994, 3100, 5184);
+        feature9.setClassName("PEAR");
+        payloads.add(feature9);
+
+        FeaturePayload feature10 = new FeaturePayload(22929, 4336, 5184);
+        feature10.setClassName("PEAR");
+        payloads.add(feature10);
+
+        FeaturePayload feature11 = new FeaturePayload(23286, 3462, 5184);
+        feature11.setClassName("PEAR");
+        payloads.add(feature11);
+
+        FeaturePayload feature12 = new FeaturePayload(22789, 3471, 5184);
+        feature12.setClassName("PEAR");
+        payloads.add(feature12);
     }
 }
