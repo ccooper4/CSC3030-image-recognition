@@ -10,6 +10,7 @@ import util.ResourceUtils;
 import util.StringConstants;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
+import java.nio.Buffer;
 
 /**
  * Class to hold all image processing logic - to be used in conjunction with pipeline implementations
@@ -129,6 +130,78 @@ public class ImageUtils {
         int perimeter = originalArea - erodedArea;
 
         return perimeter;
+    }
+
+    /**
+     * Calculates the mean gray value for the image.
+     * @param image The image.
+     * @return      The calculated mean.
+     */
+    public static int calculateMeanSegmented(BufferedImage image, BufferedImage segmentedImage) {
+
+        Raster imgRaster = image.getRaster();
+        Raster segmentedRaster = segmentedImage.getRaster();
+
+        if (imgRaster.getHeight() != segmentedRaster.getHeight() || imgRaster.getWidth() != segmentedRaster.getWidth()) {
+            return 0;
+        }
+
+        int width = imgRaster.getWidth();
+        int height = imgRaster.getHeight();
+        int pixelCount = 0;
+
+        int levelSum = 0;
+
+        for (int hor = 0; hor < width; ++hor)  {
+            for (int vert = 0; vert < height; ++vert)  {
+                if (segmentedRaster.getSample(hor, vert, 0) != 0) {
+                    levelSum += imgRaster.getSample(hor, vert, 0);
+                    pixelCount++;
+                }
+            }
+        }
+
+        int avg = levelSum / pixelCount;
+        log.info("Calculated segmented mean of: " + avg);
+        return avg;
+    }
+
+    /**
+     * Calculates the standard deviation of an image.
+     * @param image The image.
+     * @param mean  The mean.
+     * @return      The calculated standard deviation.
+     */
+    public static int calculateStandardDeviationSegmented(BufferedImage image, BufferedImage segmented, int mean) {
+
+        Raster imgRaster = image.getRaster();
+        Raster segmentedRaster = segmented.getRaster();
+
+        if (imgRaster.getHeight() != segmentedRaster.getHeight() || imgRaster.getWidth() != segmentedRaster.getWidth()) {
+            return 0;
+        }
+
+        int width = imgRaster.getWidth();
+        int height = imgRaster.getHeight();
+        int pixelCount = width * height;
+
+        int levelSum = 0;
+
+        for (int hor = 0; hor < width; ++hor)  {
+            for (int vert = 0; vert < height; ++vert)  {
+                if (segmentedRaster.getSample(hor, vert,0) != 0) {
+                    levelSum += Math.pow((imgRaster.getSample(hor, vert, 0) - mean), 2);
+                    pixelCount++;
+                }
+            }
+        }
+
+        int divider = pixelCount - 1;
+
+        int sd = (int)Math.sqrt(levelSum / divider);
+
+        log.info("Calculated segmented standard deviation of: " + sd);
+        return sd;
     }
 
     /**
