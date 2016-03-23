@@ -14,24 +14,19 @@ import static org.junit.Assert.assertEquals;
  */
 public class FeatureExtractionImplTest {
 
-    public BufferedImage testingImage;
-    public FeatureExtractionImpl featureExtraction;
+    private BufferedImage testingImage;
+    private FeatureExtractionImpl featureExtraction;
 
-    public FeaturePayload expectedFeaturePayload;
-    public final int expectedArea = 12605;
-    public final int expectedPerimeter = 1075;
-    public final int expectedCompactness = 91;
-    public final int expectedVariance = 10000;
+    private FeaturePayload expectedFeaturePayload;
+    private final int expectedArea = 12605;
+    private final int expectedPerimeter = 1897;
+    private final int expectedVariance = 10000;
 
     @Before
     public void loadTestingImage() {
         testingImage = ImageUtils.readInImage(ResourceUtils.getResourcePathAsString("segmented.png"));
         featureExtraction = new FeatureExtractionImpl();
-        expectedFeaturePayload = new FeaturePayload();
-        expectedFeaturePayload.setArea(expectedArea);
-        expectedFeaturePayload.setPerimeter(expectedPerimeter);
-        expectedFeaturePayload.setCompactness(expectedCompactness);
-        expectedFeaturePayload.setTextureVariance(expectedVariance);
+        expectedFeaturePayload = new FeaturePayload(expectedArea, expectedPerimeter, expectedVariance);
     }
 
     @Test
