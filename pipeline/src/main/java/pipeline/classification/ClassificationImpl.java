@@ -82,7 +82,9 @@ public class ClassificationImpl extends BasePipelineArtifact implements IClassif
     private String classifyPayload2D(FeaturePayload testPayload){
         List<Neighbour> neighbours = new ArrayList<>();
 
-        description += wrapDescription("K Nearest Neighbor 2D Classifier");
+        if (description == "") {
+            description += wrapDescription("K Nearest Neighbor 2D Classifier");
+        }
 
         for (FeaturePayload payload  : trainingSet) {
 
@@ -108,7 +110,9 @@ public class ClassificationImpl extends BasePipelineArtifact implements IClassif
     private String classifyPayload(FeaturePayload testPayload){
         List<Neighbour> neighbours = new ArrayList<>();
 
-        description += wrapDescription("K Nearest Neighbor 1D Classifier");
+        if (description == "") {
+            description += wrapDescription("K Nearest Neighbor 1D Classifier");
+        }
 
         for (FeaturePayload payload  : trainingSet) {
             double difference;

@@ -73,7 +73,7 @@ public class SegmentationImpl extends BasePipelineArtifact implements ISegmentat
      */
     private BufferedImage directlySegment(BufferedImage bufferedImage) {
 
-        if (description != "") {
+        if (description == "") {
             description = wrapDescription("Brightness based segmentation.");
         }
         int thresholdValue = ImageUtils.calculateAutomaticThresholdValue(bufferedImage, segmentationConstant);
@@ -92,7 +92,9 @@ public class SegmentationImpl extends BasePipelineArtifact implements ISegmentat
      */
     private BufferedImage edgeSegment(BufferedImage bufferedImage)
     {
-        description = wrapDescription("Edge detection based segmentation");
+        if (description == "") {
+            description = wrapDescription("Edge detection based segmentation");
+        }
 
         BufferedImage edges = getMagnitudeImage(bufferedImage);
 
