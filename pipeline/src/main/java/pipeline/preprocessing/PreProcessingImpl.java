@@ -49,10 +49,12 @@ public class PreProcessingImpl extends BasePipelineArtifact implements IPreproce
     public BufferedImage performPreprocessing(BufferedImage bufferedImage) {
         description = "";
         try {
+
             bufferedImage = enhanceBrightness(bufferedImage);
-            bufferedImage = enhanceContrast(bufferedImage);
+            bufferedImage = enhanceContrast(bufferedImage);     // Best Results
+//            bufferedImage = enhanceContrastPL(bufferedImage);   // Best Segmentation
             bufferedImage = performNoiseReduction(bufferedImage);
-        } catch (HistogramException e) {
+        } catch (Exception e) {
             log.error("Histogram exception", e);
         }
         return bufferedImage;
