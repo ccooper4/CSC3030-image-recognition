@@ -1,6 +1,5 @@
 package pipeline.controller;
 
-import pipeline.IPipelineArtifact;
 import pipeline.PipelineDescription;
 import pipeline.featureextraction.FeaturePayload;
 

@@ -8,10 +8,7 @@ import util.ConfigurationUtils;
 import util.StringConstants;
 import util.image.ImageUtils;
 import util.image.LUTFactory;
-
-import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 
 /**
  * Provides an implementation for the Segmentation stage of the Image Pipeline.

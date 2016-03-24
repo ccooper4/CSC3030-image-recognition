@@ -2,7 +2,6 @@ package ui.Panels;
 
 import ui.ResultTableModel;
 import javax.swing.*;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 /**
  * The panel used for the report UI

@@ -10,7 +10,6 @@ import util.ResourceUtils;
 import util.StringConstants;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
-import java.nio.Buffer;
 
 /**
  * Class to hold all image processing logic - to be used in conjunction with pipeline implementations

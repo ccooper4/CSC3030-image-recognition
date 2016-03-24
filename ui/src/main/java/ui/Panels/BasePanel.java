@@ -6,7 +6,7 @@ import pipeline.controller.IPipelineController;
 import pipeline.controller.PipelineController;
 import util.ResourceUtils;
 import javax.swing.*;
-import java.awt.*;;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;

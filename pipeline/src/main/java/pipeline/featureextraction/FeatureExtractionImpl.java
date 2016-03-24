@@ -1,13 +1,10 @@
 package pipeline.featureextraction;
 
 import pipeline.BasePipelineArtifact;
-import qub.visionsystem.ImageOp;
 import util.ConfigurationUtils;
 import util.StringConstants;
 import util.image.ImageUtils;
-
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 
 public class FeatureExtractionImpl extends BasePipelineArtifact implements IFeatureExtraction {
 
